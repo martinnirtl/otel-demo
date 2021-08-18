@@ -24,7 +24,7 @@ services:
       - ./redis/data:/data
 
   backend:
-  container_name: backend
+    container_name: backend
     image: backend:local
     build: backend
     environment:
