@@ -1,0 +1,56 @@
+version: '2'
+
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=backend
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodb/init:/docker-entrypoint-initdb.d
+      - ./mongodb/data:/data/db
+
+  redis:
+    image: redis:5.0.13
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/data:/data
+
+  backend:
+    image: backend:local
+    build: backend
+    environment:
+      - PORT=4000
+      - DB_CONNECTION_URL=mongodb://backend:swordfish@mongodb:27017/backend
+      - MAIL_SERVICE_BASE_URL=http://mail-service:4100
+    ports:
+      - "4000:4000"
+
+  mail-service:
+    image: mail-service:local
+    build: mail-service
+    environment:
+      - PORT=4100
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=1
+      - TEMPLATE_SERVICE_BASE_URL=http://template-service:4200
+    ports:
+      - "4100:4100"
+
+  template-service:
+    image: template-service:local
+    build: template-service
+    environment:
+      - PORT=4200
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+    ports:
+      - "4200:4200"
