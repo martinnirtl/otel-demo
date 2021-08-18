@@ -1,10 +1,10 @@
-const opentelemetry = require('@opentelemetry/api');
+// const opentelemetry = require('@opentelemetry/api');
 // const { CounterMetric } = require('@opentelemetry/metrics');
 const express = require('express');
 const axios = require('axios').default;
 const { connect } = require('./db');
 
-const tracer = opentelemetry.trace.getTracer();
+// const tracer = opentelemetry.trace.getTracer();
 
 let db;
 connect().then(database => { db = database });
@@ -25,11 +25,11 @@ app.get('/users/:id', async (req, res) => {
 app.post('/subscribe', async (req, res) => {
   const users = db.collection('users');
   
-  const currentSpan = api.trace.getSpan(api.context.active());
-  console.log(`traceid: ${currentSpan.spanContext().traceId}`);
+  // const currentSpan = opentelemetry.trace.getSpan(opentelemetry.context.active());
+  // console.log(`traceid: ${currentSpan.spanContext().traceId}`);
 
-  const span = tracer.startSpan('Send newsletter subscription mail', { attributes: req.body });
-  const ctx = opentelemetry.trace.setSpan(opentelemetry.context.active(), sendConfirmationEmailSpan);
+  // const span = tracer.startSpan('Send newsletter subscription mail', { attributes: req.body });
+  // const ctx = opentelemetry.trace.setSpan(opentelemetry.context.active(), sendConfirmationEmailSpan);
 
   try {
     console.log('rendering the email template');
