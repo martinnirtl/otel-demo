@@ -2,6 +2,7 @@ version: '2'
 
 services:
   mongodb:
+    container_name: mongodb
     image: mongo
     restart: always
     environment:
@@ -15,14 +16,15 @@ services:
       - ./mongodb/data:/data/db
 
   redis:
-    image: redis:5.0.13
     container_name: redis
+    image: redis:5.0.13
     ports:
       - "6379:6379"
     volumes:
       - ./redis/data:/data
 
   backend:
+  container_name: backend
     image: backend:local
     build: backend
     environment:
@@ -33,6 +35,7 @@ services:
       - "4000:4000"
 
   mail-service:
+    container_name: mail-service
     image: mail-service:local
     build: mail-service
     environment:
@@ -45,6 +48,7 @@ services:
       - "4100:4100"
 
   template-service:
+    container_name: template-service
     image: template-service:local
     build: template-service
     environment:
