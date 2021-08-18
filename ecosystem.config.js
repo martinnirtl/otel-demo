@@ -14,7 +14,7 @@ module.exports = {
       },
       {
         name: "mail-service",
-        script: "start.js",
+        script: "index.js",
         cwd: "/home/ubuntu/mail-service/src",
         watch: true,
         env: {
