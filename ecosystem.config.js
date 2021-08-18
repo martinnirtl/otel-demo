@@ -3,7 +3,7 @@ module.exports = {
       {
         name: "backend",
         script: "index.js",
-        cwd: "/home/ubuntu/backend/src",
+        cwd: "backend/src",
         watch: true,
         env: {
           "NODE_ENV": "production",
@@ -15,7 +15,7 @@ module.exports = {
       {
         name: "mail-service",
         script: "index.js",
-        cwd: "/home/ubuntu/mail-service/src",
+        cwd: "mail-service/src",
         watch: true,
         env: {
           "NODE_ENV": "production",
@@ -29,7 +29,7 @@ module.exports = {
       {
         name: "template-service",
         script: "index.js",
-        cwd: "/home/ubuntu/template-service/src",
+        cwd: "template-service/src",
         watch: true,
         env: {
           "NODE_ENV": "production",
