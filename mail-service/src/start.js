@@ -1,2 +1,2 @@
-require('tracing.js');
-require('index.js');
+require('./tracing.js');
+require('./index.js');
