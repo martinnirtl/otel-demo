@@ -1,10 +1,10 @@
-// const opentelemetry = require('@opentelemetry/api');
+const opentelemetry = require('@opentelemetry/api');
 // const { CounterMetric } = require('@opentelemetry/metrics');
 const express = require('express');
 const axios = require('axios').default;
 const { connect } = require('./db');
 
-// const tracer = opentelemetry.trace.getTracer();
+const tracer = opentelemetry.trace.getTracer();
 
 let db;
 connect().then(database => { db = database });
@@ -34,7 +34,7 @@ app.post('/subscribe', async (req, res) => {
   try {
     console.log('rendering the email template');
 
-    // const buildPayloadSpan = tracer.startSpan('build payload');
+    const buildPayloadSpan = tracer.startSpan('Build payload', { attributes: { userId: 1 }});
     // const buildPayloadSpan = tracer.startSpan('build payload', null, ctx);
 
     const user = await users.findOne({}); // find first user
@@ -51,7 +51,7 @@ app.post('/subscribe', async (req, res) => {
           }
       }
     };
-    // buildPayloadSpan.end();
+    buildPayloadSpan.end();
 
     console.log('sending the email...');
     const { data } = await axios.post(`${process.env.MAIL_SERVICE_BASE_URL}/send`, emailContent);
