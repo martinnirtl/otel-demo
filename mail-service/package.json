@@ -2,7 +2,7 @@
   "name": "mail-service",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "src/start.js",
   "scripts": {
     "dev": "nodemon -r dotenv/config src/index.js"
   },

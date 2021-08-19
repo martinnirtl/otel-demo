@@ -8,9 +8,9 @@ const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
 
 const collectorOptions = {
-  url: `${DT_ENV_URL}//api/v2/otlp/v1/traces`, // url is optional and can be omitted - default is http://localhost:55681/v1/trace
+  url: process.env.OTEL_BACKEND_URL, // url is optional and can be omitted - default is http://localhost:55681/v1/trace
   headers: {
-    Authorization: `Api-Token ${process.env.DT_TOKEN}`,
+    Authorization: `Api-Token ${process.env.OTEL_AUTH}`,
   },
 };
 
