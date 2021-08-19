@@ -12,8 +12,8 @@ module.exports = {
         "REDIS_PORT": 6379,
         "REDIS_DB": 1,
         "TEMPLATE_SERVICE_BASE_URL": "http://172.31.32.248:4200",
-        "OTEL_BACKEND_URL": undefined,
-        "OTEL_AUTH": undefined,
+        "OTEL_BACKEND_URL": "https://<tenant-url>/api/v2/otlp/v1/traces",
+        "OTEL_AUTH_HEADER": "Api-Token <token>",
       }
     },
   ]
