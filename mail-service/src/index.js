@@ -11,6 +11,8 @@ const app = express();
 app.use(express.json());
 
 app.post('/send', async (req, res) => {
+  console.log(req.headers);
+
   const id = _.get(req, 'body.id', undefined);
   const body = _.get(req, 'body');
   const template = _.get(req, 'body.template');
