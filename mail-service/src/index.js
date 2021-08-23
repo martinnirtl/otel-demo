@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.post('/send', async (req, res) => {
   console.log(req.headers);
-  console.log(api.context.active());
+  // console.log(api.context.active());
 
   const span = tracer.startSpan('Extracting variables', { attributes: req.body });
   const id = _.get(req, 'body.id', undefined);
@@ -43,7 +43,7 @@ app.post('/send', async (req, res) => {
     if (id) {
       console.log('persisting status in db...');
 
-      await cache.setex(id.toLowerCase(), 86400, 'accepted');
+      cache.setex(id.toLowerCase(), 86400, 'accepted').catch(error => console.error(error));
     }
 
     console.log('sending response...');
