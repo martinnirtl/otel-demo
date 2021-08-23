@@ -1,22 +1,25 @@
-// const opentelemetry = require('@opentelemetry/api');
+const api = require('@opentelemetry/api');
 const express = require('express');
 const _ = require('lodash')
 const axios = require('axios').default;
 
 const { cache } = require('./cache');
 
-// const tracer = opentelemetry.trace.getTracer();
+const tracer = api.trace.getTracer();
 
 const app = express();
 app.use(express.json());
 
 app.post('/send', async (req, res) => {
   console.log(req.headers);
+  console.log(api.context.active());
 
+  const span = tracer.startSpan('Extracting variables', { attributes: req.body });
   const id = _.get(req, 'body.id', undefined);
   const body = _.get(req, 'body');
   const template = _.get(req, 'body.template');
   let text = _.get(req, 'body.text');
+  span.end();
 
   try {
     if (template) {
