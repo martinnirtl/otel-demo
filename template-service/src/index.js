@@ -10,6 +10,8 @@ const app = express();
 app.use(express.json());
 
 app.post('/render', async function(req, res) {
+  console.log(req.headers);
+  
   const template = _.get(req, 'body.template.name');
   const vars = _.get(req, 'body.template.vars');
   const key = keyify(template, Object.values(vars));
