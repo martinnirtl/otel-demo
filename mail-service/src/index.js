@@ -27,6 +27,14 @@ app.post('/send', async (req, res) => {
       text = await axios.post(process.env.TEMPLATE_SERVICE_BASE_URL + '/render', { template });
     }
 
+    try {
+      api.propagation.setBaggage(api.context.active(), api.propagation.createBaggage({ hello: 'world' }));
+    } catch (error) {
+      console.error(error);
+      
+      console.log('could not setBaggage');
+    }
+
     if (!text) {
       throw new Error('Empty text field is not allowed');
     }
