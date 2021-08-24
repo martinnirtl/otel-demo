@@ -27,23 +27,22 @@ app.post('/send', async (req, res) => {
       text = await axios.post(process.env.TEMPLATE_SERVICE_BASE_URL + '/render', { template });
     }
 
-    try {
-      api.propagation.setBaggage(api.context.active(), api.propagation.createBaggage({ hello: 'world' }));
-    } catch (error) {
-      console.error(error);
-      
-      console.log('could not setBaggage');
-    }
-
     if (!text) {
       throw new Error('Empty text field is not allowed');
     }
 
     console.log('sending mail payload to mail-provider...');
+    const baggage = api.propagation.createBaggage({ hello: { value: 'world', metadata: ['foo', 'bar'] } });
+    let context = api.context.active();
+    context = api.propagation.setBaggage(context, baggage);
+    const headers = {};
+    api.propagation.inject(context, headers);
+
     const { data } = await axios.get(`https://httpbin.org/headers`, {
-      ...body,
-      template: undefined,
-      text,
+      // ...body,
+      // template: undefined,
+      // text,
+      headers
     });
     console.log('mail sent');
     console.log(data);
