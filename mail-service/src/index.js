@@ -22,9 +22,15 @@ app.post('/send', async (req, res) => {
   span.end();
 
   try {
+    const baggage = api.propagation.createBaggage({ hello: { value: 'world', metadata: ['foo', 'bar'] } });
+    let context = api.context.active();
+    context = api.propagation.setBaggage(context, baggage);
+    const headers = {};
+    api.propagation.inject(context, headers);
+
     if (template) {
       console.log('calling template-service to render text...');
-      text = await axios.post(process.env.TEMPLATE_SERVICE_BASE_URL + '/render', { template });
+      text = await axios.post(process.env.TEMPLATE_SERVICE_BASE_URL + '/render', { template }, { headers });
     }
 
     if (!text) {
@@ -32,12 +38,6 @@ app.post('/send', async (req, res) => {
     }
 
     console.log('sending mail payload to mail-provider...');
-    const baggage = api.propagation.createBaggage({ hello: { value: 'world', metadata: ['foo', 'bar'] } });
-    let context = api.context.active();
-    context = api.propagation.setBaggage(context, baggage);
-    const headers = {};
-    api.propagation.inject(context, headers);
-
     const { data } = await axios.get(`https://httpbin.org/headers`, {
       // ...body,
       // template: undefined,
