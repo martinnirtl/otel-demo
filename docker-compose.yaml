@@ -48,6 +48,7 @@ services:
     container_name: mail-service
     image: mail-service:local
     build: mail-service
+    entrypoint: ["node", "src/start.js"]
     environment:
       - PORT=4100
       - REDIS_HOST=${REDIS_HOST}
