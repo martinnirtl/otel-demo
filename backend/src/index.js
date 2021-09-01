@@ -26,13 +26,11 @@ app.get('/users/:id', async (req, res) => {
 })
 
 app.post('/subscribe', async (req, res) => {
-  console.log('here comes the tracing context:');
-  console.log(opentelemetry.context.active());
-
   const email = _.get(req, 'body.email');
 
   try {
-    const valid = new Promise((resolve, _reject) => verify.isValidEmail({ email }, (error, { valid }) => resolve(valid)));
+    const valid = await new Promise((resolve, _reject) => verify.isValidEmail({ email }, (error, { valid }) => resolve(valid)));
+    console.log('isValidEmail: ' + valid);
     
     if (valid) {
       console.log('email is valid...');
