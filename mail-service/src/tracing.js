@@ -1,5 +1,5 @@
 const { SimpleSpanProcessor, ConsoleSpanExporter, BatchSpanProcessor } = require('@opentelemetry/sdk-trace-base'); // exchange if possible
-const { NodeTracerProvider,  } = require('@opentelemetry/sdk-trace-node');
+const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
 const { IORedisInstrumentation } = require('@opentelemetry/instrumentation-ioredis');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 // const { CollectorTraceExporter } = require('@opentelemetry/exporter-collector');
