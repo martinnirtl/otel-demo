@@ -24,7 +24,7 @@ const tracerProvider = new NodeTracerProvider({
   }),
 });
 
-if (process.env.OTEL_EXPORT_ENABLE) {
+if (process.env.OTEL_EXPORT_ENABLE === 'true') {
   const exporter = new CollectorTraceExporter(collectorOptions);
   tracerProvider.addSpanProcessor(new BatchSpanProcessor(exporter, {
     // The maximum queue size. After the size is reached spans are dropped.
