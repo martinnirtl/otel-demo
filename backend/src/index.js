@@ -26,6 +26,9 @@ app.get('/users/:id', async (req, res) => {
 })
 
 app.post('/subscribe', async (req, res) => {
+  console.log('here comes the tracing context:');
+  console.log(opentelemetry.context.active());
+
   const email = _.get(req, 'body.email');
 
   try {
