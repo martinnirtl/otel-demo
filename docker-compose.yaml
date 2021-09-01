@@ -23,6 +23,13 @@ services:
     volumes:
       - ./redis/data:/data
 
+  loadgen:
+    container_name: loadgen
+    image: loadgen:local
+    build: loadgen
+    environment:
+      - BACKEND_BASE_URL=http://${BACKEND_HOST}:3000
+
   backend:
     container_name: backend
     image: backend:local
