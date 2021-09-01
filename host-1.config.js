@@ -10,7 +10,7 @@ module.exports = {
         "PORT": 3000,
         "DB_CONNECTION_URL": "mongodb://backend:swordfish@172.31.36.204:27017/backend",
         "MAIL_SERVICE_BASE_URL": "http://172.31.36.204:4100",
-        "VERIFICATION_SERVICE_URL": "172.31.36.204:4010"
+        "VERIFICATION_SERVICE_URL": "localhost:4010"
       }
     },
     {
