@@ -2,6 +2,8 @@ const opentelemetry = require('@opentelemetry/api');
 // const { CounterMetric } = require('@opentelemetry/metrics');
 const express = require('express');
 const axios = require('axios').default;
+const _ = require('lodash');
+
 const { connect } = require('./db');
 const { client: verify } = require('./verification');
 
