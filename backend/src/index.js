@@ -80,7 +80,7 @@ app.post('/subscribe', async (req, res) => {
 
     console.log('confirmation email sent');
 
-    return res.status(200).send();
+    return res.end();
   } catch (error) {
     console.error(error);
 
