@@ -21,7 +21,7 @@ const isValidEmail = (call, callback) => {
 
 const server = new grpc.Server();
 server.addService(verification_proto.VerificationService.service, { isValidEmail });
-server.bindAsync(process.env.PORT, grpc.ServerCredentials.createInsecure(), (error, port) => {
+server.bindAsync(`0.0.0.0:${process.env.PORT}`, grpc.ServerCredentials.createInsecure(), (error, port) => {
   if (!error) {
     server.start();
 
