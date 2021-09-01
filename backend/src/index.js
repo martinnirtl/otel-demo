@@ -3,6 +3,7 @@ const opentelemetry = require('@opentelemetry/api');
 const express = require('express');
 const axios = require('axios').default;
 const { connect } = require('./db');
+const { client: verify } = require('./verification');
 
 const tracer = opentelemetry.trace.getTracer();
 
@@ -23,6 +24,14 @@ app.get('/users/:id', async (req, res) => {
 })
 
 app.post('/subscribe', async (req, res) => {
+  const email = _.get(req, 'body.email');
+
+  const { valid } = verify.isValidEmail({ email });
+  if (valid) {
+    console.log('email is valid...')
+  }
+
+
   const users = db.collection('users');
   
   // const currentSpan = opentelemetry.trace.getSpan(opentelemetry.context.active());
