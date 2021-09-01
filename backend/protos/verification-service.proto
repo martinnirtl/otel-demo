@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package verificationservice;
+
+service VerificationService {
+  rpc isValidEmail(EmailRequest) returns (EmailResponse);
+}
+
+message EmailRequest {
+  string email = 1;
+}
+
+message EmailResponse {
+  bool valid = 1;
+}

@@ -1,4 +1,4 @@
-const PROTO_PATH = __dirname + '/../../protos/verification-service.proto';
+const PROTO_PATH = __dirname + '/../protos/verification-service.proto';
 
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
