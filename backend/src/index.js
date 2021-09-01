@@ -29,7 +29,7 @@ app.post('/subscribe', async (req, res) => {
   const email = _.get(req, 'body.email');
 
   try {
-    const { valid } = verify.isValidEmail({ email });
+    const valid = new Promise((resolve, _reject) => verify.isValidEmail({ email }, (error, { valid }) => resolve(valid)));
     
     if (valid) {
       console.log('email is valid...');
