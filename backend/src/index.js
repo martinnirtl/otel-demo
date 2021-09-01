@@ -28,11 +28,15 @@ app.get('/users/:id', async (req, res) => {
 app.post('/subscribe', async (req, res) => {
   const email = _.get(req, 'body.email');
 
-  const { valid } = verify.isValidEmail({ email });
-  if (valid) {
-    console.log('email is valid...')
+  try {
+    const { valid } = verify.isValidEmail({ email });
+    
+    if (valid) {
+      console.log('email is valid...');
+    }
+  } catch (error) {
+    console.error(error);
   }
-
 
   const users = db.collection('users');
   
