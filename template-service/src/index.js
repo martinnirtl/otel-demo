@@ -3,7 +3,7 @@ const _ = require('lodash');
 const { cache, keyify } = require('./cache');
 
 const templates = {
-  'newsletter.subscribe': (vars) => ({ subject: 'Welcome!', content: `Hi ${vars.name}\nThanks for signing up to our product!\n\nRegards,\nThe Team` })
+  'user.signup': (vars) => ({ subject: 'Welcome!', content: `Hi ${vars.name}\nThanks for signing up to our product!\n\nRegards,\nThe Team` })
 };
 
 const app = express();
