@@ -8,9 +8,6 @@ exports.connect = async () => {
 
   console.log('connected successfully to db server');
   db = mongoClient.db();
-  // const collection = db.collection('users');
-
-  // const martin = await collection.find().toArray()
-
+  
   return db;
 };
