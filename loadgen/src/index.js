@@ -7,7 +7,7 @@ setInterval(async () => {
   log.info('generating user...');
 
   const user = {
-    email: faker.internet.email,
+    email: faker.internet.email(),
     password: faker.internet.password(),
     name: `${faker.name.firstName()} ${faker.name.lastName()}`
   };
