@@ -33,7 +33,8 @@ app.get('/users/:email', async (req, res) => {
 app.post('/signup', async (req, res) => {
   const user = _.get(req, 'body');
 
-  req.log.info('signing up new user...');
+  req.log.info('signing up new user:');
+  req.log.debug(user);
 
   try {
     const valid = await new Promise((resolve, _reject) => verify.isValidEmail({ email: user.email }, (error, { valid }) => resolve(valid)));
