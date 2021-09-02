@@ -3,7 +3,7 @@ const opentelemetry = require('@opentelemetry/api');
 const express = require('express');
 const axios = require('axios').default;
 const _ = require('lodash');
-const exitHook = require('aync-exit-hook');
+const exitHook = require('async-exit-hook');
 
 const { connect } = require('./db');
 const { client: verify } = require('./verification');
@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json());
 
 app.get('/users/:email', async (req, res) => {
-  const email = _.get(req, 'body.email');
+  const email = _.get(req, 'params.email');
 
   const users = db.collection('users');
 
@@ -30,6 +30,8 @@ app.get('/users/:email', async (req, res) => {
 
 app.post('/signup', async (req, res) => {
   const user = _.get(req, 'body');
+
+  console.log('signing up new user...');
 
   try {
     const valid = await new Promise((resolve, _reject) => verify.isValidEmail({ email: user.email }, (error, { valid }) => resolve(valid)));
