@@ -1,5 +1,5 @@
 const faker = require('faker');
-const axios = require('axios');
+const axios = require('axios').default;
 
 setInterval(async () => {
   console.log('generating user...');
@@ -10,5 +10,9 @@ setInterval(async () => {
   };
 
   console.log(`signing up ${user.email}...`);
-  await axios.post(`${process.env.BACKEND_BASE_URL}/signUp`, user);
+  await axios.post(`${process.env.BACKEND_BASE_URL}/signup`, user, {
+    headers: {
+      'user-agent': faker.internet.userAgent(),
+    }
+  });
 }, 60000);
