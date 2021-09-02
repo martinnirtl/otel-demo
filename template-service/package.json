@@ -12,7 +12,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "ioredis": "^4.27.7",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "pino-http": "^5.7.0"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",

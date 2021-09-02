@@ -1,5 +1,7 @@
 const express = require('express');
 const _ = require('lodash');
+
+const logging = require('./logging');
 const { cache, keyify } = require('./cache');
 
 const templates = {
@@ -8,27 +10,28 @@ const templates = {
 
 const app = express();
 app.use(express.json());
+app.use(logging);
 
 app.post('/render', async function(req, res) {
-  console.log(req.headers);
+  req.log.debug(req.headers);
   
   const template = _.get(req, 'body.template.name');
   const vars = _.get(req, 'body.template.vars');
   const key = keyify(template, Object.values(vars));
 
-  console.log('created key: ' + key);
+  req.log.info('created key: ' + key);
 
   const subject = await cache.get(key + '.subject');
   const content = await cache.get(key + '.content');
   if (subject && content) {
-    console.log('responding with rendered content from cache');
+    req.log.info('responding with rendered content from cache');
 
     return res.status(200).send({ subject, content });
   }
 
   let rendered;
   try {
-    console.log('rendering template: ' + template);
+    req.log.info('rendering template: ' + template);
 
     rendered = templates[template](vars);
   } catch (error) {
@@ -38,7 +41,7 @@ app.post('/render', async function(req, res) {
   }
 
   try {
-    console.log('adding just rendered template to cache...');
+    req.log.info('adding just rendered template to cache...');
 
     await cache.setex(key + '.subject', 600, rendered.subject);
     await cache.setex(key + '.content', 600, rendered.content);
@@ -46,16 +49,16 @@ app.post('/render', async function(req, res) {
     console.error(error);
   }
 
-  console.log('returning the rendered template...');
+  req.log.info('returning the rendered template...');
   return res.status(200).send(rendered);
 });
 
 const port = process.env.PORT || 3000;
 
-const server = app.listen(port, () => console.log(`listening on port ${port}`));
+const server = app.listen(port, () => logging.logger.info(`listening on port ${port}`));
 
 process.on("SIGINT", () => {
-  console.log('received a SIGINT signal. going down...');
+  logging.logger.info('received a SIGINT signal. going down...');
 
   server.close();
 });

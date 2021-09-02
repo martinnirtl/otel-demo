@@ -1,4 +1,7 @@
 const Redis = require('ioredis');
+const { logger } = require('./logging');
+
+logger.info('connecting to redis cache...');
 
 exports.cache = new Redis({
   host: process.env.REDIS_HOST || 'localhost',
