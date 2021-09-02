@@ -2,6 +2,7 @@ const api = require('@opentelemetry/api');
 const express = require('express');
 const _ = require('lodash')
 const axios = require('axios').default;
+const { nanoid } = require('nanoid');
 
 const { cache } = require('./cache');
 
@@ -13,12 +14,13 @@ app.use(express.json());
 app.post('/send', async (req, res) => {
   console.log(req.headers);
   // console.log(api.context.active());
+  const id = _.get(req, 'body.id', nanoid(10));
 
-  const span = tracer.startSpan('Extracting variables', { attributes: req.body });
-  const id = _.get(req, 'body.id', undefined);
-  const body = _.get(req, 'body');
+  const span = tracer.startSpan('Extracting variables', { attributes: { 'mail.id': id} });
+  
   const template = _.get(req, 'body.template');
   let text = _.get(req, 'body.text');
+
   span.end();
 
   try {
@@ -54,7 +56,7 @@ app.post('/send', async (req, res) => {
     }
 
     console.log('sending response...');
-    return res.status(200).send({ status: 'accepted' });
+    return res.status(200).send({ status: 'accepted', sid });
   } catch (error) {
     console.error(error);
 
