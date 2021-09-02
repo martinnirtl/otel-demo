@@ -3,7 +3,7 @@ const _ = require('lodash');
 const { cache, keyify } = require('./cache');
 
 const templates = {
-  'newsletter.subscribe': (vars) => `Hi ${vars.name}\nThanks for signing up to our newsletter!\n\nRegards,\nThe Team`
+  'newsletter.subscribe': (vars) => ({ subject: 'Welcome!', content: `Hi ${vars.name}\nThanks for signing up to our product!\n\nRegards,\nThe Team` })
 };
 
 const app = express();
@@ -18,19 +18,18 @@ app.post('/render', async function(req, res) {
 
   console.log('created key: ' + key);
 
-  let text = await cache.get(key);
-  if (text) {
-    console.log('responding with rendered text from cache');
+  let subject = await cache.get(key + '.subject');
+  let content = await cache.get(key + '.content');
+  if (subject && content) {
+    console.log('responding with rendered content from cache');
 
-    return res.status(200).send({ text });
+    return res.status(200).send({ subject, content });
   }
 
   try {
     console.log('rendering template: ' + template);
 
-    
-
-    text = templates[template](vars);
+    ({ subject, content }) = templates[template](vars);
   } catch (error) {
     console.error(error);
 
@@ -38,15 +37,16 @@ app.post('/render', async function(req, res) {
   }
 
   try {
-    console.log('adding just rendered text to cache...');
+    console.log('adding just rendered template to cache...');
 
-    await cache.setex(key, 600, text);
+    await cache.setex(key + '.subject', 600, subject);
+    await cache.setex(key + '.content', 600, content);
   } catch (error) {
     console.error(error);
   }
 
-  console.log('returning the rendered text');
-  return res.status(200).send({ text });
+  console.log('returning the rendered template...');
+  return res.status(200).send({ subject, content });
 });
 
 const port = process.env.PORT || 3000;
