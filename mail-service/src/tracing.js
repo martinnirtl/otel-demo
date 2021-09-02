@@ -9,7 +9,9 @@ const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
 const { Resource } = require('@opentelemetry/resources');
 
-console.log('initializing tracing module...')
+const { logger } = require('./logging');
+
+logger.info('initializing tracing module...');
 
 const collectorOptions = {
   url: process.env.OTEL_BACKEND_URL, // url is optional and can be omitted - default is http://localhost:55681/v1/trace

@@ -4,16 +4,18 @@ const _ = require('lodash')
 const axios = require('axios').default;
 const { nanoid } = require('nanoid');
 
+const logging = require('./logging');
 const { cache } = require('./cache');
 
 const tracer = api.trace.getTracer();
 
 const app = express();
 app.use(express.json());
+app.use(logging);
 
 app.post('/send', async (req, res) => {
-  console.log(req.headers);
-  // console.log(api.context.active());
+  req.log.debug(req.headers);
+  // req.log.info(api.context.active());
   const sid = _.get(req, 'body.sid', nanoid(10));
 
   const span = tracer.startSpan('Extracting variables', { attributes: { 'mail.sid': sid} });
@@ -31,7 +33,7 @@ app.post('/send', async (req, res) => {
     api.propagation.inject(context, headers);
 
     if (template) {
-      console.log('calling template-service to render text...');
+      req.log.info('calling template-service to render text...');
       text = await axios.post(process.env.TEMPLATE_SERVICE_BASE_URL + '/render', { template }, { headers });
     }
 
@@ -39,26 +41,26 @@ app.post('/send', async (req, res) => {
       throw new Error('Empty text field is not allowed');
     }
 
-    console.log('sending mail payload to mail-provider...');
+    req.log.info('sending mail payload to mail-provider...');
     const { data } = await axios.get(`https://httpbin.org/headers`, {
       // ...body,
       // template: undefined,
       // text,
       headers
     });
-    console.log('mail sent');
-    console.log(data);
+    req.log.info('mail sent');
+    req.log.info(data);
 
     if (sid) {
-      console.log('persisting status in db...');
+      req.log.info('persisting status in db...');
 
-      cache.setex(sid, 86400, 'accepted').catch(error => console.error(error));
+      cache.setex(sid, 86400, 'accepted').catch(error => req.log.error(error));
     }
 
-    console.log('sending response...');
+    req.log.info('sending response...');
     return res.status(200).send({ status: 'accepted', sid });
   } catch (error) {
-    console.error(error);
+    req.log.error(error);
 
     return res.status(500).send({ code: 'SendingFailed', message: 'Failed to send email' });
   }
@@ -67,7 +69,7 @@ app.post('/send', async (req, res) => {
 app.get('/status/:id', async (req, res) => {
   const id = _.get(req, 'params.id', '').toLowerCase();
 
-  console.log('retrieving status from db...');
+  req.log.info('retrieving status from db...');
   const status = await cache.get(id) || 'unknown';
 
   return res.status(200).send({ id, status });
@@ -75,10 +77,10 @@ app.get('/status/:id', async (req, res) => {
 
 const port = process.env.PORT || 3000;
 
-const server = app.listen(port, () => console.log(`listening on port ${port}`));
+const server = app.listen(port, () => logging.logger.info(`listening on port ${port}`));
 
 process.on("SIGINT", () => {
-  console.log('received a SIGINT signal. going down...')
+  logging.logger.info('received a SIGINT signal. going down...')
 
   server.close()
 });
