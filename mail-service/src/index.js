@@ -14,9 +14,9 @@ app.use(express.json());
 app.post('/send', async (req, res) => {
   console.log(req.headers);
   // console.log(api.context.active());
-  const id = _.get(req, 'body.id', nanoid(10));
+  const sid = _.get(req, 'body.sid', nanoid(10));
 
-  const span = tracer.startSpan('Extracting variables', { attributes: { 'mail.id': id} });
+  const span = tracer.startSpan('Extracting variables', { attributes: { 'mail.sid': sid} });
   
   const template = _.get(req, 'body.template');
   let text = _.get(req, 'body.text');
@@ -49,10 +49,10 @@ app.post('/send', async (req, res) => {
     console.log('mail sent');
     console.log(data);
 
-    if (id) {
+    if (sid) {
       console.log('persisting status in db...');
 
-      cache.setex(id.toLowerCase(), 86400, 'accepted').catch(error => console.error(error));
+      cache.setex(sid, 86400, 'accepted').catch(error => console.error(error));
     }
 
     console.log('sending response...');
