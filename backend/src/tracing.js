@@ -1,7 +1,9 @@
+
 // const opentelemetry = require('@opentelemetry/api');
 const { BasicTracerProvider } = require('@opentelemetry/tracing');
+const { logger } = require('./logging');
 
-console.log('initializing the tracing module...');
+logger.info('initializing the tracing module...');
 
 const tracerProvider = new BasicTracerProvider();
 tracerProvider.register();

@@ -5,6 +5,7 @@ const axios = require('axios').default;
 const _ = require('lodash');
 const exitHook = require('async-exit-hook');
 
+const logging = require('./logging');
 const { connect } = require('./db');
 const { client: verify } = require('./verification');
 
@@ -15,6 +16,7 @@ connect().then(database => { db = database });
 
 const app = express();
 app.use(express.json());
+app.use(logging);
 
 app.get('/users/:email', async (req, res) => {
   const email = _.get(req, 'params.email');
@@ -31,17 +33,17 @@ app.get('/users/:email', async (req, res) => {
 app.post('/signup', async (req, res) => {
   const user = _.get(req, 'body');
 
-  console.log('signing up new user...');
+  req.log.info('signing up new user...');
 
   try {
     const valid = await new Promise((resolve, _reject) => verify.isValidEmail({ email: user.email }, (error, { valid }) => resolve(valid)));
-    console.log('isValidEmail: ' + valid);
+    req.log.debug('isValidEmail: ' + valid);
     
     if (!valid) {
       throw new Error('Invalid email detected');
     }
   } catch (error) {
-    console.error(error);
+    req.log.error(error);
 
     return res.status(400).send({ code: 'InvalidEmail' });
   }
@@ -50,21 +52,21 @@ app.post('/signup', async (req, res) => {
     const users = db.collection('users');
 
     const operationResult = await users.insertOne(user); // we store passwords in plain text (which is bad), but ok for demo purposes!
-    console.log(operationResult);
+    req.log.info(operationResult);
   } catch (error) {
-    console.log(error);
+    req.log.info(error);
 
     return res.status(400).send({ code: 'CreateUserError' });
   }
   
   // const currentSpan = opentelemetry.trace.getSpan(opentelemetry.context.active());
-  // console.log(`traceid: ${currentSpan.spanContext().traceId}`);
+  // req.log.info(`traceid: ${currentSpan.spanContext().traceId}`);
 
   // const span = tracer.startSpan('Send newsletter subscription mail', { attributes: req.body });
   // const ctx = opentelemetry.trace.setSpan(opentelemetry.context.active(), sendConfirmationEmailSpan);
 
   try {
-    console.log('sending email...');
+    req.log.info('sending email...');
 
     const span = tracer.startSpan('Build payload', { attributes: { 'user.email': user.email }});
 
@@ -80,9 +82,9 @@ app.post('/signup', async (req, res) => {
       }
     };
 
-    console.log('sending the email...');
+    req.log.info('sending the email...');
     const { data } = await axios.post(`${process.env.MAIL_SERVICE_BASE_URL}/send`, emailContent);
-    console.log(data);
+    req.log.info(data);
 
     // sendConfirmationEmailSpan.addEvent('send', emailContent);
     // sendConfirmationEmailSpan.setStatus({
@@ -90,12 +92,12 @@ app.post('/signup', async (req, res) => {
     // });
     // sendConfirmationEmailSpan.end();
 
-    console.log('welcome email sent');
+    req.log.info('welcome email sent');
     span.end();
 
     return res.end();
   } catch (error) {
-    console.error(error);
+    req.log.error(error);
 
     // sendConfirmationEmailSpan.setStatus({
     //   code: opentelemetry.SpanStatusCode.ERROR,
@@ -108,10 +110,10 @@ app.post('/signup', async (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-const server = app.listen(port, () => console.log(`listening on port ${port}`));
+const server = app.listen(port, () => logging.logger.info(`listening on port ${port}`));
 
 exitHook(async () => {
-  console.log('app is going down...')
+  logging.logger.info('app is going down...');
 
   await db.close()
   server.close()
