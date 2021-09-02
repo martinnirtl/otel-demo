@@ -18,18 +18,19 @@ app.post('/render', async function(req, res) {
 
   console.log('created key: ' + key);
 
-  let subject = await cache.get(key + '.subject');
-  let content = await cache.get(key + '.content');
+  const subject = await cache.get(key + '.subject');
+  const content = await cache.get(key + '.content');
   if (subject && content) {
     console.log('responding with rendered content from cache');
 
     return res.status(200).send({ subject, content });
   }
 
+  let rendered;
   try {
     console.log('rendering template: ' + template);
 
-    ({ subject, content }) = templates[template](vars);
+    rendered = templates[template](vars);
   } catch (error) {
     console.error(error);
 
@@ -39,14 +40,14 @@ app.post('/render', async function(req, res) {
   try {
     console.log('adding just rendered template to cache...');
 
-    await cache.setex(key + '.subject', 600, subject);
-    await cache.setex(key + '.content', 600, content);
+    await cache.setex(key + '.subject', 600, rendered.subject);
+    await cache.setex(key + '.content', 600, rendered.content);
   } catch (error) {
     console.error(error);
   }
 
   console.log('returning the rendered template...');
-  return res.status(200).send({ subject, content });
+  return res.status(200).send(rendered);
 });
 
 const port = process.env.PORT || 3000;
