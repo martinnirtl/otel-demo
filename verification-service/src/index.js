@@ -3,6 +3,8 @@ const PROTO_PATH = __dirname + '/../protos/verification-service.proto';
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 
+const { log } = require('./logging');
+
 const packageDefinition = protoLoader.loadSync(
     PROTO_PATH,
     {keepCase: true,
@@ -14,7 +16,7 @@ const packageDefinition = protoLoader.loadSync(
 const verification_proto = grpc.loadPackageDefinition(packageDefinition).verificationservice;
 
 const isValidEmail = (call, callback) => {
-  console.log('checking email address: ' + call.request.email);
+  log.info('checking email address: ' + call.request.email);
 
   callback(null, { valid: true });
 }
@@ -25,6 +27,6 @@ server.bindAsync(`0.0.0.0:${process.env.PORT}`, grpc.ServerCredentials.createIns
   if (!error) {
     server.start();
 
-    console.log(`server listening on port ${port}`);
+    log.info(`server listening on port ${port}`);
   }
 });
