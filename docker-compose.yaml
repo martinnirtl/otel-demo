@@ -81,6 +81,7 @@ services:
       - BACKEND_BASE_URL=http://${BACKEND_HOST}:3000
 
   otel-collector:
+    container_name: otel-collector
     image: otel/opentelemetry-collector:latest
     command: ["--config=/etc/otel-collector-config.yaml"]
     environment:
