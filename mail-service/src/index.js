@@ -18,7 +18,7 @@ app.post('/send', async (req, res) => {
   // req.log.info(api.context.active());
   const sid = _.get(req, 'body.sid', nanoid(10));
 
-  const span = tracer.startSpan('Extracting variables', { attributes: { 'mail.sid': sid} });
+  const span = tracer.startSpan('Extracting variables', { attributes: { 'app.mail.sid': sid} });
   
   const template = _.get(req, 'body.template');
   let text = _.get(req, 'body.text');
