@@ -12,7 +12,9 @@ const { client: verify } = require('./verification');
 const tracer = opentelemetry.trace.getTracer();
 
 let db;
-connect().then(database => { db = database });
+connect().then(database => {
+  db = database;
+});
 
 const app = express();
 app.use(express.json());
@@ -23,9 +25,12 @@ app.get('/users/:email', async (req, res) => {
 
   const users = db.collection('users');
 
-  const user = await users.findOne({ email }, {
-    projection: { _id: 0, password: 0 },
-  });
+  const user = await users.findOne(
+    { email },
+    {
+      projection: { _id: 0, password: 0 },
+    },
+  );
 
   res.status(200).send(user);
 });
@@ -37,9 +42,11 @@ app.post('/signup', async (req, res) => {
   req.log.debug(user);
 
   try {
-    const valid = await new Promise((resolve, _reject) => verify.isValidEmail({ email: user.email }, (error, { valid }) => resolve(valid)));
+    const valid = await new Promise((resolve, _reject) =>
+      verify.isValidEmail({ email: user.email }, (error, { valid }) => resolve(valid)),
+    );
     req.log.debug('isValidEmail: ' + valid);
-    
+
     if (!valid) {
       throw new Error('Invalid email detected');
     }
@@ -59,7 +66,7 @@ app.post('/signup', async (req, res) => {
 
     return res.status(400).send({ code: 'CreateUserError' });
   }
-  
+
   // const currentSpan = opentelemetry.trace.getSpan(opentelemetry.context.active());
   // req.log.info(`traceid: ${currentSpan.spanContext().traceId}`);
 
@@ -69,18 +76,18 @@ app.post('/signup', async (req, res) => {
   try {
     req.log.info('sending email...');
 
-    const span = tracer.startSpan('Build payload', { attributes: { 'user.email': user.email }});
+    const span = tracer.startSpan('Build payload', { attributes: { 'user.email': user.email } });
 
     const emailContent = {
       to: user.email,
       from: 'welcome@nptn.one',
       lang: req.query.lang || 'de',
       template: {
-          name: 'user.signup',
-          vars: {
-              name: user.name
-          }
-      }
+        name: 'user.signup',
+        vars: {
+          name: user.name,
+        },
+      },
     };
 
     req.log.info('sending the email...');
@@ -105,7 +112,7 @@ app.post('/signup', async (req, res) => {
     //   message: error.message
     // });
     // sendConfirmationEmailSpan.end();
-    
+
     return res.status(500).send();
   }
 });
@@ -116,7 +123,6 @@ const server = app.listen(port, () => logging.logger.info(`listening on port ${p
 exitHook(async () => {
   logging.logger.info('app is going down...');
 
-  await db.close()
-  server.close()
+  await db.close();
+  server.close();
 });
-  

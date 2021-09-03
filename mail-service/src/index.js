@@ -1,6 +1,6 @@
 const api = require('@opentelemetry/api');
 const express = require('express');
-const _ = require('lodash')
+const _ = require('lodash');
 const axios = require('axios').default;
 const { nanoid } = require('nanoid');
 
@@ -18,8 +18,8 @@ app.post('/send', async (req, res) => {
   // req.log.info(api.context.active());
   const sid = _.get(req, 'body.sid', nanoid(10));
 
-  const span = tracer.startSpan('Extracting variables', { attributes: { 'app.mail.sid': sid} });
-  
+  const span = tracer.startSpan('Extracting variables', { attributes: { 'app.mail.sid': sid } });
+
   const template = _.get(req, 'body.template');
   let text = _.get(req, 'body.text');
 
@@ -46,7 +46,7 @@ app.post('/send', async (req, res) => {
       // ...body,
       // template: undefined,
       // text,
-      headers
+      headers,
     });
     req.log.info('mail sent');
     req.log.info(data);
@@ -70,7 +70,7 @@ app.get('/status/:id', async (req, res) => {
   const id = _.get(req, 'params.id', '').toLowerCase();
 
   req.log.info('retrieving status from db...');
-  const status = await cache.get(id) || 'unknown';
+  const status = (await cache.get(id)) || 'unknown';
 
   return res.status(200).send({ id, status });
 });
@@ -79,8 +79,8 @@ const port = process.env.PORT || 3000;
 
 const server = app.listen(port, () => logging.logger.info(`listening on port ${port}`));
 
-process.on("SIGINT", () => {
-  logging.logger.info('received a SIGINT signal. going down...')
+process.on('SIGINT', () => {
+  logging.logger.info('received a SIGINT signal. going down...');
 
-  server.close()
+  server.close();
 });

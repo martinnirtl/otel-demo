@@ -9,6 +9,6 @@ exports.connect = async () => {
 
   logger.info('connected successfully to db server');
   db = mongoClient.db();
-  
+
   return db;
 };

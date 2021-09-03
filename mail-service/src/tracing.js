@@ -40,7 +40,7 @@ if (process.env.OTEL_EXPORT_ENABLE === 'true') {
   //   scheduledDelayMillis: 30000,
   // }));
   tracerProvider.addSpanProcessor(new SimpleSpanProcessor(exporter)); // using simpleSpanProcessor as otel-collector and grpc exporter in place
-};
+}
 if (process.env.NODE_ENV !== 'production') {
   tracerProvider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
 }
@@ -49,9 +49,5 @@ tracerProvider.register();
 
 registerInstrumentations({
   tracerProvider,
-  instrumentations: [
-    new IORedisInstrumentation(),
-    new HttpInstrumentation(),
-    new ExpressInstrumentation(),
-  ],
+  instrumentations: [new IORedisInstrumentation(), new HttpInstrumentation(), new ExpressInstrumentation()],
 });

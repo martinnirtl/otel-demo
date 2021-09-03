@@ -5,11 +5,11 @@ receivers:
         endpoint: 0.0.0.0:4317
       http:
         endpoint: 0.0.0.0:4318
-        
+
 exporters:
   otlphttp:
-    endpoint: "${OTEL_ENDPOINT_URL}"
-    headers: { "Authorization": "${OTEL_AUTH_HEADER}" }
+    endpoint: '${OTEL_ENDPOINT_URL}'
+    headers: { 'Authorization': '${OTEL_AUTH_HEADER}' }
 
   logging:
     loglevel: debug
@@ -19,6 +19,6 @@ exporters:
 service:
   pipelines:
     traces:
-      receivers: [ otlp ]
+      receivers: [otlp]
       processors: []
-      exporters: [ otlphttp, logging ]
+      exporters: [otlphttp, logging]

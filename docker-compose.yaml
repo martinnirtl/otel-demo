@@ -10,7 +10,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=admin
       - MONGO_INITDB_DATABASE=backend
     ports:
-      - "27017:27017"
+      - '27017:27017'
     volumes:
       - ./mongodb/init:/docker-entrypoint-initdb.d
       - ./mongodb/data:/data/db
@@ -19,7 +19,7 @@ services:
     container_name: redis
     image: redis:5.0.13
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
       - ./redis/data:/data
 
@@ -33,13 +33,13 @@ services:
       - REDIS_PORT=6379
       - REDIS_DB=2
     ports:
-      - "4200:4200"
+      - '4200:4200'
 
   mail-service:
     container_name: mail-service
     image: mail-service:local
     build: mail-service
-    entrypoint: ["node", "src/start.js"]
+    entrypoint: ['node', 'src/start.js']
     environment:
       - PORT=4100
       - REDIS_HOST=${REDIS_HOST}
@@ -50,7 +50,7 @@ services:
       - OTEL_ENDPOINT_URL=grpc://otel-collector:4317 # The CollectorTraceExporter in Node expects the URL to only be the hostname. It will not work with /v1/traces.
       # - OTEL_AUTH_HEADER=
     ports:
-      - "4100:4100"
+      - '4100:4100'
 
   verification-service:
     container_name: verification-service
@@ -59,7 +59,7 @@ services:
     environment:
       - PORT=4010
     ports:
-      - "4010:4010"
+      - '4010:4010'
 
   backend:
     container_name: backend
@@ -71,7 +71,7 @@ services:
       - MAIL_SERVICE_BASE_URL=http://${MAILSERVICE_HOST}:4100
       - VERIFICATION_SERVICE_URL=${VERIFICATIONSERVICE_HOST}:4010
     ports:
-      - "3000:3000"
+      - '3000:3000'
 
   loadgen:
     container_name: loadgen
@@ -83,17 +83,17 @@ services:
   otel-collector:
     container_name: otel-collector
     image: otel/opentelemetry-collector:latest
-    command: ["--config=/etc/otel-collector-config.yaml"]
+    command: ['--config=/etc/otel-collector-config.yaml']
     environment:
       - OTEL_ENDPOINT_URL
       - OTEL_AUTH_HEADER
     ports:
       # - "1888:1888"   # pprof extension
-      - "8888:8888"   # Prometheus metrics exposed by the collector
+      - '8888:8888' # Prometheus metrics exposed by the collector
       # - "8889:8889"   # Prometheus exporter metrics
       # - "13133:13133" # health_check extension
-      - "4317:4317"        # OTLP gRPC receiver
-      - "4318:4318"        # OTLP HTTP receiver
+      - '4317:4317' # OTLP gRPC receiver
+      - '4318:4318' # OTLP HTTP receiver
       # - "55670:55679" # zpages extension
     volumes:
       - ./otel/config.yaml:/etc/otel-collector-config.yaml
