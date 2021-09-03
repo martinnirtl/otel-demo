@@ -1,8 +1,8 @@
 version: '2'
 
 services:
-  mongodb:
-    container_name: mongodb
+  mongo:
+    container_name: mongo
     image: mongo
     restart: always
     environment:
