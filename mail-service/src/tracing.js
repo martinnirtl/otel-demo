@@ -33,14 +33,17 @@ const tracerProvider = new NodeTracerProvider({
 
 if (process.env.OTEL_EXPORT_ENABLE === 'true') {
   const exporter = new CollectorTraceExporter(collectorOptions);
-  tracerProvider.addSpanProcessor(new BatchSpanProcessor(exporter, {
-    // The maximum queue size. After the size is reached spans are dropped.
-    maxQueueSize: 1000,
-    // The interval between two consecutive exports
-    scheduledDelayMillis: 30000,
-  }));
+  // tracerProvider.addSpanProcessor(new BatchSpanProcessor(exporter, {
+  //   // The maximum queue size. After the size is reached spans are dropped.
+  //   maxQueueSize: 1000,
+  //   // The interval between two consecutive exports
+  //   scheduledDelayMillis: 30000,
+  // }));
+  tracerProvider.addSpanProcessor(new SimpleSpanProcessor(exporter)); // using simpleSpanProcessor as otel-collector and grpc exporter in place
+};
+if (process.env.NODE_ENV !== 'production') {
+  tracerProvider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
 }
-tracerProvider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
 
 tracerProvider.register();
 
