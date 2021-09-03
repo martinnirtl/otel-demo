@@ -3,7 +3,8 @@ const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
 const { IORedisInstrumentation } = require('@opentelemetry/instrumentation-ioredis');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 // const { CollectorTraceExporter } = require('@opentelemetry/exporter-collector');
-const { CollectorTraceExporter } = require('@opentelemetry/exporter-collector-proto');
+// const { CollectorTraceExporter } = require('@opentelemetry/exporter-collector-proto');
+const { CollectorTraceExporter } = require('@opentelemetry/exporter-collector-grpc');
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
@@ -13,11 +14,15 @@ const { logger } = require('./logging');
 
 logger.info('initializing tracing module...');
 
+// const collectorOptions = {
+//   url: process.env.OTEL_ENDPOINT_URL,
+//   headers: {
+//     Authorization: process.env.OTEL_AUTH_HEADER,
+//   },
+// };
+
 const collectorOptions = {
-  url: process.env.OTEL_BACKEND_URL, // url is optional and can be omitted - default is http://localhost:55681/v1/trace
-  headers: {
-    Authorization: process.env.OTEL_AUTH_HEADER,
-  },
+  url: process.env.OTEL_ENDPOINT_URL,
 };
 
 const tracerProvider = new NodeTracerProvider({

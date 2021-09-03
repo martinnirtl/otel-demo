@@ -13,6 +13,7 @@
   "dependencies": {
     "@opentelemetry/api": "^1.0.2",
     "@opentelemetry/exporter-collector": "^0.24.0",
+    "@opentelemetry/exporter-collector-grpc": "^0.24.0",
     "@opentelemetry/exporter-collector-proto": "^0.24.0",
     "@opentelemetry/instrumentation": "^0.24.0",
     "@opentelemetry/instrumentation-express": "^0.24.0",
