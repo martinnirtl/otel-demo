@@ -9,7 +9,7 @@ receivers:
 exporters:
   otlphttp:
     endpoint: "${OTEL_ENDPOINT_URL}"
-    headers: { "Authorization": "${OTEL_AUTH_HEADER" }
+    headers: { "Authorization": "${OTEL_AUTH_HEADER}" }
 
   logging:
     loglevel: debug
