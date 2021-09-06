@@ -27,6 +27,7 @@ services:
     container_name: template-service
     image: template-service:local
     build: template-service
+    entrypoint: ['node', 'src/start.js']
     environment:
       - PORT=4200
       - REDIS_HOST=${REDIS_HOST}
