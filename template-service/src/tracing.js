@@ -1,4 +1,3 @@
-// const opentelemetry = require('@opentelemetry/api');
 const { BasicTracerProvider } = require('@opentelemetry/tracing');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { IORedisInstrumentation } = require('@opentelemetry/instrumentation-ioredis');

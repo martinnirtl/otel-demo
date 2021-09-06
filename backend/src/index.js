@@ -76,7 +76,7 @@ app.post('/signup', async (req, res) => {
   try {
     req.log.info('sending email...');
 
-    const span = tracer.startSpan('Build payload', { attributes: { 'user.email': user.email } });
+    const span = tracer.startSpan('Build payload', { attributes: { 'app.user.email': user.email } });
 
     const emailContent = {
       to: user.email,
