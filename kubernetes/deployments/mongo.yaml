@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+  labels:
+    db: mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      db: mongo
+  template:
+    metadata:
+      labels:
+        db: mongo
+    spec:
+      containers:
+        - image: mongo
+          name: mongo
+          resources: {}
+          envFrom:
+            - configMapRef:
+                name: mongo-config
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - mountPath: /docker-entrypoint-initdb.d
+              name: init-claim
+      volumes:
+        - name: init-claim
+          configMap:
+            name: mongo-init

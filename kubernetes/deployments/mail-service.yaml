@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mail-service
+  labels:
+    app: mail-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mail-service
+  template:
+    metadata:
+      labels:
+        app: mail-service
+    spec:
+      containers:
+        - image: martinnirtl/demos.opentelemetry.mail-service:latest
+          name: mail-service
+          resources: {}
+          command:
+            - node
+            - src/start.js
+          envFrom:
+            - configMapRef:
+                name: mail-service-config
+          ports:
+            - containerPort: 4100

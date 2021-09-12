@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: loadgen
+  name: loadgen
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loadgen
+  template:
+    metadata:
+      labels:
+        app: loadgen
+    spec:
+      containers:
+        - name: loadgen
+          image: martinnirtl/demos.opentelemetry.loadgen:latest
+          resources: {}
+          envFrom:
+            - configMapRef:
+                name: loadgen-config
