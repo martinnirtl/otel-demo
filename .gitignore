@@ -3,3 +3,4 @@ mongodb/data
 redis/data
 
 **/.env
+**/*-secret.yaml
