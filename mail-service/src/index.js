@@ -62,7 +62,7 @@ app.post('/send', async (req, res) => {
   } catch (error) {
     req.log.error(error);
 
-    return res.status(500).send({ code: 'SendingFailed', message: 'Failed to send email' });
+    return res.status(500).send({ status: 'failed', sid, code: 'SendingFailed', message: 'Failed to send email' });
   }
 });
 
