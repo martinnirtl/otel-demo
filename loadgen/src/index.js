@@ -3,7 +3,7 @@ const axios = require('axios').default;
 
 const { log } = require('./logging');
 
-setInterval(async () => {
+const doSignUp = async () => {
   log.info('generating user...');
 
   const user = {
@@ -18,4 +18,12 @@ setInterval(async () => {
       'user-agent': faker.internet.userAgent(),
     },
   });
+};
+
+setInterval(() => {
+  const signUps = faker.datatype.number({ min: 1, max: 10 });
+
+  for (let i = 0; i < signUps; i++) {
+    doSignUp().catch(error => log.error(error));
+  }
 }, 60000);
