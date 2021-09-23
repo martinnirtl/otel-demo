@@ -7,7 +7,7 @@ const { nanoid } = require('nanoid');
 const logging = require('./logging');
 const { cache } = require('./cache');
 
-const tracer = api.trace.getTracer();
+const tracer = api.trace.getTracer('index.js');
 
 const app = express();
 app.use(express.json());

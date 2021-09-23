@@ -9,7 +9,7 @@ const logging = require('./logging');
 const { connect } = require('./db');
 const { client: verify } = require('./verification');
 
-const tracer = opentelemetry.trace.getTracer();
+const tracer = opentelemetry.trace.getTracer('index.js');
 
 let db;
 connect().then(database => {
