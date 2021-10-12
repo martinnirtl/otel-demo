@@ -8,6 +8,6 @@ spec:
   selector:
     app: backend
   ports:
-    - name: '3000'
-      port: 3000
-      targetPort: 3000
+    - name: '4000'
+      port: 4000
+      targetPort: 4000
