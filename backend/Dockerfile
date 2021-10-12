@@ -15,6 +15,7 @@ ENV SERVICE_NAME backend
 ENTRYPOINT ["node", "src/index.js"]
 
 USER node
+EXPOSE 4000
 
 # https://nodejs.org/en/docs/guides/nodejs-docker-webapp/
 # https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md
