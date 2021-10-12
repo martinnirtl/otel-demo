@@ -13,11 +13,15 @@ const doSignUp = async () => {
   };
 
   log.info(`signing up ${user.email}...`);
-  await axios.post(`${process.env.BACKEND_BASE_URL}/signup`, user, {
-    headers: {
-      'user-agent': faker.internet.userAgent(),
-    },
-  });
+  try {
+    await axios.post(`${process.env.BACKEND_BASE_URL}/signup`, user, {
+      headers: {
+        'user-agent': faker.internet.userAgent(),
+      },
+    });
+  } catch (error) {
+    log.error(error);
+  }
 };
 
 setInterval(() => {
