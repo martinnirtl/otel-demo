@@ -24,5 +24,3 @@ spec:
           envFrom:
             - configMapRef:
                 name: template-service-config
-          ports:
-            - containerPort: 4200

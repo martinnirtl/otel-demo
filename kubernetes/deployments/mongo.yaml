@@ -21,8 +21,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: mongo-config
-          ports:
-            - containerPort: 27017
           volumeMounts:
             - mountPath: /docker-entrypoint-initdb.d
               name: init-claim

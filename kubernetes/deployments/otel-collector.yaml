@@ -23,10 +23,6 @@ spec:
           envFrom:
             - secretRef:
                 name: otel-collector-secret
-          ports:
-            - containerPort: 8888
-            - containerPort: 4317
-            - containerPort: 4318
           volumeMounts:
             - mountPath: /etc/opentelemetry-collector
               name: config
