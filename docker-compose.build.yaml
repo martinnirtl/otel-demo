@@ -11,15 +11,11 @@ services:
 
   verification-service:
     image: martinnirtl/demos.opentelemetry.verification-service:latest
-    build:
-      context: services
-      dockerfile: verification-service/Dockerfile
+    build: services/verification-service
 
   backend:
     image: martinnirtl/demos.opentelemetry.backend:latest
-    build:
-      context: services
-      dockerfile: backend/Dockerfile
+    build: services/backend
 
   loadgen:
     image: martinnirtl/demos.opentelemetry.loadgen:latest

@@ -5,8 +5,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install --only=prod
 
-COPY ./backend .
-COPY ./protos ./protos
+COPY . .
 
 ENV NODE_ENV production
 ENV SERVICE_NAME backend
