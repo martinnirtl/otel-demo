@@ -15,7 +15,7 @@ spec:
         db: mongo
     spec:
       containers:
-        - image: mongo
+        - image: mongo:5.0.4
           name: mongo
           resources: {}
           envFrom:
