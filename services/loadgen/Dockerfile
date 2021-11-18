@@ -11,6 +11,8 @@ COPY . .
 ENV NODE_ENV production
 ENV SERVICE_NAME loadgen
 
+ENV DISABLE_DEEP_MONITORING true
+
 # NOTE enables graceful shutdown > https://medium.com/@gchudnov/trapping-signals-in-docker-containers-7a57fdda7d86
 ENTRYPOINT ["node", "src/index.js"]
 
