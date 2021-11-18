@@ -26,11 +26,11 @@ services:
   template-service:
     # container_name: template-service
     image: martinnirtl/demos.opentelemetry.template-service:latest
-    build: service/template-service
+    build: services/template-service
     entrypoint: ['node', 'src/start.js']
     environment:
       - PORT=4200
-      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_DB=2
     ports:
@@ -39,14 +39,14 @@ services:
   mail-service:
     # container_name: mail-service
     image: martinnirtl/demos.opentelemetry.mail-service:latest
-    build: service/mail-service
+    build: services/mail-service
     entrypoint: ['node', 'src/start.js']
     environment:
       - PORT=4100
-      - REDIS_HOST=${REDIS_HOST}
+      - redis=redis
       - REDIS_PORT=6379
       - REDIS_DB=1
-      - TEMPLATE_SERVICE_BASE_URL=http://${TEMPLATESERVICE_HOST}:4200
+      - TEMPLATE_SERVICE_BASE_URL=http://template-service:4200
       - OTEL_EXPORT_ENABLE=true
       - OTEL_ENDPOINT_URL=grpc://otel-collector:4317 # The CollectorTraceExporter in Node expects the URL to only be the hostname. It will not work with /v1/traces.
       # - OTEL_AUTH_HEADER=
@@ -56,7 +56,7 @@ services:
   verification-service:
     # container_name: verification-service
     image: martinnirtl/demos.opentelemetry.verification-service:latest
-    build: service/verification-service
+    build: services/verification-service
     environment:
       - PORT=4010
     ports:
@@ -65,21 +65,21 @@ services:
   backend:
     # container_name: backend
     image: martinnirtl/demos.opentelemetry.backend:latest
-    build: service/backend
+    build: services/backend
     environment:
       - PORT=3000
-      - DB_CONNECTION_URL=mongodb://backend:swordfish@${MONGODB_HOST}:27017/backend
-      - MAIL_SERVICE_BASE_URL=http://${MAILSERVICE_HOST}:4100
-      - VERIFICATION_SERVICE_URL=${VERIFICATIONSERVICE_HOST}:4010
+      - DB_CONNECTION_URL=mongodb://backend:swordfish@mongo:27017/backend
+      - MAIL_SERVICE_BASE_URL=http://mail-service:4100
+      - VERIFICATION_SERVICE_URL=verification-service:4010
     ports:
       - '3000:3000'
 
   loadgen:
     # container_name: loadgen
     image: martinnirtl/demos.opentelemetry.loadgen:latest
-    build: service/loadgen
+    build: services/loadgen
     environment:
-      - BACKEND_BASE_URL=http://${BACKEND_HOST}:3000
+      - BACKEND_BASE_URL=http://backend:3000
 
   otel-collector:
     # container_name: otel-collector
