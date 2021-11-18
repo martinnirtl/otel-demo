@@ -7,6 +7,7 @@ COPY package*.json ./
 RUN npm install --only=prod
 
 COPY . .
+COPY ../protos .
 
 ENV NODE_ENV production
 ENV SERVICE_NAME backend

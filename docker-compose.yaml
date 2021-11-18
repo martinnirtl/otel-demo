@@ -56,7 +56,9 @@ services:
   verification-service:
     # container_name: verification-service
     image: martinnirtl/demos.opentelemetry.verification-service:latest
-    build: services/verification-service
+    build:
+      context: services
+      dockerfile: verification-service/Dockerfile
     environment:
       - PORT=4010
     ports:
@@ -65,7 +67,9 @@ services:
   backend:
     # container_name: backend
     image: martinnirtl/demos.opentelemetry.backend:latest
-    build: services/backend
+    build:
+      context: services
+      dockerfile: backend/Dockerfile
     environment:
       - PORT=3000
       - DB_CONNECTION_URL=mongodb://backend:swordfish@mongo:27017/backend
