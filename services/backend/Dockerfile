@@ -3,11 +3,10 @@ FROM node:14.17-alpine3.12
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-
 RUN npm install --only=prod
 
 COPY ./backend .
-COPY ./protos .
+COPY ./protos ./protos
 
 ENV NODE_ENV production
 ENV SERVICE_NAME backend
