@@ -26,7 +26,6 @@ services:
   template-service:
     # container_name: template-service
     image: martinnirtl/demos.opentelemetry.template-service:latest
-    build: services/template-service
     entrypoint: ['node', 'src/start.js']
     environment:
       - PORT=4200
@@ -39,7 +38,6 @@ services:
   mail-service:
     # container_name: mail-service
     image: martinnirtl/demos.opentelemetry.mail-service:latest
-    build: services/mail-service
     entrypoint: ['node', 'src/start.js']
     environment:
       - PORT=4100
@@ -56,9 +54,6 @@ services:
   verification-service:
     # container_name: verification-service
     image: martinnirtl/demos.opentelemetry.verification-service:latest
-    build:
-      context: services
-      dockerfile: verification-service/Dockerfile
     environment:
       - PORT=4010
     ports:
@@ -67,9 +62,6 @@ services:
   backend:
     # container_name: backend
     image: martinnirtl/demos.opentelemetry.backend:latest
-    build:
-      context: services
-      dockerfile: backend/Dockerfile
     environment:
       - PORT=3000
       - DB_CONNECTION_URL=mongodb://backend:swordfish@mongo:27017/backend
@@ -81,7 +73,6 @@ services:
   loadgen:
     # container_name: loadgen
     image: martinnirtl/demos.opentelemetry.loadgen:latest
-    build: services/loadgen
     environment:
       - BACKEND_BASE_URL=http://backend:3000
 
