@@ -6,7 +6,7 @@ COPY package*.json ./
 
 RUN npm install --only=prod
 
-COPY ./verifcation-service .
+COPY ./verification-service .
 COPY ./protos .
 
 ENV NODE_ENV production
