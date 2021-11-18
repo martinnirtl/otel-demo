@@ -1,6 +1,6 @@
 **/node_modules
-mongodb/data
-redis/data
+services/mongodb/data
+services/redis/data
 
 **/.env
 **/*-secret.yaml
