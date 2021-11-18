@@ -102,7 +102,7 @@ services:
   oneagent:
     # container_name: oneagent
     image: dynatrace/oneagent
-    command: ['--set-host-name="OpenTelemetry Demo Host 1"', '--set-host-group="opentelemetry-demo"']
+    command: ['--set-host-name=OpenTelemetry Demo Host 1', '--set-host-group=opentelemetry-demo']
     restart: unless-stopped
     privileged: true
     pid: host
