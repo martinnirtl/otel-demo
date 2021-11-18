@@ -2,8 +2,8 @@ version: '2'
 
 services:
   mongo:
-    container_name: mongo
-    image: mongo
+    # container_name: mongo
+    image: mongo:5.0.4
     restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
@@ -16,7 +16,7 @@ services:
       - ./mongodb/data:/data/db
 
   redis:
-    container_name: redis
+    # container_name: redis
     image: redis:5.0.13
     ports:
       - '6379:6379'
@@ -24,9 +24,9 @@ services:
       - ./redis/data:/data
 
   template-service:
-    container_name: template-service
-    image: template-service:local
-    build: template-service
+    # container_name: template-service
+    image: martinnirtl/demos.opentelemetry.template-service:latest
+    build: service/template-service
     entrypoint: ['node', 'src/start.js']
     environment:
       - PORT=4200
@@ -37,9 +37,9 @@ services:
       - '4200:4200'
 
   mail-service:
-    container_name: mail-service
-    image: mail-service:local
-    build: mail-service
+    # container_name: mail-service
+    image: martinnirtl/demos.opentelemetry.mail-service:latest
+    build: service/mail-service
     entrypoint: ['node', 'src/start.js']
     environment:
       - PORT=4100
@@ -54,18 +54,18 @@ services:
       - '4100:4100'
 
   verification-service:
-    container_name: verification-service
-    image: verification-service:local
-    build: verification-service
+    # container_name: verification-service
+    image: martinnirtl/demos.opentelemetry.verification-service:latest
+    build: service/verification-service
     environment:
       - PORT=4010
     ports:
       - '4010:4010'
 
   backend:
-    container_name: backend
-    image: backend:local
-    build: backend
+    # container_name: backend
+    image: martinnirtl/demos.opentelemetry.backend:latest
+    build: service/backend
     environment:
       - PORT=3000
       - DB_CONNECTION_URL=mongodb://backend:swordfish@${MONGODB_HOST}:27017/backend
@@ -75,14 +75,14 @@ services:
       - '3000:3000'
 
   loadgen:
-    container_name: loadgen
-    image: loadgen:local
-    build: loadgen
+    # container_name: loadgen
+    image: martinnirtl/demos.opentelemetry.loadgen:latest
+    build: service/loadgen
     environment:
       - BACKEND_BASE_URL=http://${BACKEND_HOST}:3000
 
   otel-collector:
-    container_name: otel-collector
+    # container_name: otel-collector
     image: otel/opentelemetry-collector:latest
     command: ['--config=/etc/otel-collector-config.yaml']
     environment:
@@ -98,3 +98,16 @@ services:
       # - "55670:55679" # zpages extension
     volumes:
       - ./otel/config.yaml:/etc/otel-collector-config.yaml
+
+  oneagent:
+    # container_name: oneagent
+    image: dynatrace/oneagent
+    restart: unless-stopped
+    privileged: true
+    pid: host
+    network_mode: host
+    environment:
+      - ONEAGENT_INSTALLER_SCRIPT_URL
+      - ONEAGENT_INSTALLER_DOWNLOAD_TOKEN
+    volumes:
+      - /:/mnt/root
