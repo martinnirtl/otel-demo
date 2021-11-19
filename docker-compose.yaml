@@ -2,7 +2,6 @@ version: '2'
 
 services:
   mongo:
-    # container_name: mongo
     image: mongo:5.0.4
     restart: always
     environment:
@@ -10,21 +9,19 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=admin
       - MONGO_INITDB_DATABASE=backend
     ports:
-      - '27017:27017'
+      # - '27017:27017'
     volumes:
       - ./services/mongodb/init:/docker-entrypoint-initdb.d
       - ./services/mongodb/data:/data/db
 
   redis:
-    # container_name: redis
     image: redis:5.0.13
     ports:
-      - '6379:6379'
+      # - '6379:6379'
     volumes:
       - ./services/redis/data:/data
 
   template-service:
-    # container_name: template-service
     image: martinnirtl/demos.opentelemetry.template-service:latest
     entrypoint: ['node', 'src/start.js']
     environment:
@@ -33,10 +30,9 @@ services:
       - REDIS_PORT=6379
       - REDIS_DB=2
     ports:
-      - '4200:4200'
+      # - '4200:4200'
 
   mail-service:
-    # container_name: mail-service
     image: martinnirtl/demos.opentelemetry.mail-service:latest
     entrypoint: ['node', 'src/start.js']
     environment:
@@ -47,37 +43,33 @@ services:
       - TEMPLATE_SERVICE_BASE_URL=http://template-service:4200
       - OTEL_EXPORT_ENABLE=true
       - OTEL_ENDPOINT_URL=grpc://otel-collector:4317 # The CollectorTraceExporter in Node expects the URL to only be the hostname. It will not work with /v1/traces.
-      # - OTEL_AUTH_HEADER=
+      # - OTEL_AUTH_HEADER= # Using otel-collector as gateway.
     ports:
-      - '4100:4100'
+      # - '4100:4100'
 
   verification-service:
-    # container_name: verification-service
     image: martinnirtl/demos.opentelemetry.verification-service:latest
     environment:
       - PORT=4010
     ports:
-      - '4010:4010'
+      # - '4010:4010'
 
   backend:
-    # container_name: backend
     image: martinnirtl/demos.opentelemetry.backend:latest
     environment:
-      - PORT=3000
-      - DB_CONNECTION_URL=mongodb://backend:swordfish@mongo:27017/backend
+      - PORT=4000
+      - DB_CONNECTION_URL=mongodb://backend:swordfish@mongo:27017/backend # Use variable expansion for username and password.
       - MAIL_SERVICE_BASE_URL=http://mail-service:4100
       - VERIFICATION_SERVICE_URL=verification-service:4010
     ports:
-      - '3000:3000'
+      - '4000:4000'
 
   loadgen:
-    # container_name: loadgen
     image: martinnirtl/demos.opentelemetry.loadgen:latest
     environment:
-      - BACKEND_BASE_URL=http://backend:3000
+      - BACKEND_BASE_URL=http://backend:4000
 
   otel-collector:
-    # container_name: otel-collector
     image: otel/opentelemetry-collector:latest
     command: ['--config=/etc/otel-collector-config.yaml']
     environment:
@@ -95,7 +87,6 @@ services:
       - ./services/otel/config.yaml:/etc/otel-collector-config.yaml
 
   oneagent:
-    # container_name: oneagent
     image: dynatrace/oneagent
     command: ['--set-host-name=OpenTelemetry Demo Host 1', '--set-host-group=opentelemetry-demo']
     restart: unless-stopped
