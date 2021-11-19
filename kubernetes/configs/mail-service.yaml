@@ -7,6 +7,6 @@ data:
   REDIS_HOST: redis
   REDIS_PORT: '6379'
   REDIS_DB: '1'
-  TEMPLATE_SERVICE_BASE_URL: https://httpbin.org/anything
+  TEMPLATE_SERVICE_BASE_URL: http://template-service:4200
   OTEL_EXPORT_ENABLE: 'true'
   OTEL_ENDPOINT_URL: grpc://otel-collector:4317
