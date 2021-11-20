@@ -1,0 +1,75 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: traefik
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: traefik
+  name: traefik
+spec:
+  selector:
+    app: traefik-lb
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      name: web
+      port: 80
+    - protocol: TCP
+      name: websecure
+      port: 443
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: traefik
+  name: traefik-ingress-controller
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  namespace: traefik
+  name: traefik
+  labels:
+    app: traefik
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik
+  template:
+    metadata:
+      labels:
+        app: traefik
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      containers:
+        - name: traefik
+          image: traefik:v2.5
+          resources: {}
+          args:
+            # - --api.insecure
+            - --api.dashboard=true # how to setup - https://doc.traefik.io/traefik/operations/dashboard/
+            - --log.level=info # levels are DEBUG, PANIC, FATAL, ERROR, WARN, and INFO - https://doc.traefik.io/traefik/observability/logs/
+            - --accesslog # https://doc.traefik.io/traefik/observability/access-logs/
+            - --entrypoints.web.Address=:80
+            - --entrypoints.websecure.Address=:443
+            # - --entrypoints.web.http.redirections.entryPoint.to=websecure
+            # - --entrypoints.web.http.redirections.entryPoint.scheme=https
+            # - --entrypoints.web.http.redirections.entrypoint.permanent=true
+            - --providers.kubernetescrd
+            - --certificatesresolvers.cert-resolver.acme.tlschallenge
+            - --certificatesresolvers.cert-resolver.acme.email=martin.nirtl@dynatrace.com
+            - --certificatesresolvers.cert-resolver.acme.storage=acme.json
+            # Please note that this is the staging Let's Encrypt server.
+            # Once you get things working, you should remove that whole line altogether.
+            # - --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+          ports:
+            - name: web
+              containerPort: 80
+            - name: websecure
+              containerPort: 443
+            - name: admin
+              containerPort: 8080

@@ -1,0 +1,27 @@
+# ---
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: IngressRoute
+# metadata:
+#   namespace: traefik
+#   name: traefik-ingress
+# spec:
+#   entryPoints:
+#     - websecure
+#   routes:
+#     - match: Host(`traefik.20.79.194.63.nip.io`)
+#       kind: Rule
+#       services:
+#         - name: api@internal
+#           kind: TraefikService
+#       middlewares:
+#         - name: auth
+#   tls:
+#     certResolver: cert-resolver
+# ---
+# apiVersion: traefik.containo.us/v1alpha1
+# kind: Middleware
+# metadata:
+#   name: auth
+# spec:
+#   basicAuth:
+#     secret: secretName # Kubernetes secret named "secretName"
