@@ -8,10 +8,10 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: traefik
-  name: traefik
+  name: traefik-lb
 spec:
   selector:
-    app: traefik-lb
+    app: traefik
   type: LoadBalancer
   ports:
     - protocol: TCP
@@ -56,16 +56,16 @@ spec:
             - --accesslog # https://doc.traefik.io/traefik/observability/access-logs/
             - --entrypoints.web.Address=:80
             - --entrypoints.websecure.Address=:443
-            # - --entrypoints.web.http.redirections.entryPoint.to=websecure
-            # - --entrypoints.web.http.redirections.entryPoint.scheme=https
-            # - --entrypoints.web.http.redirections.entrypoint.permanent=true
+            - --entrypoints.web.http.redirections.entryPoint.to=websecure
+            - --entrypoints.web.http.redirections.entryPoint.scheme=https
+            - --entrypoints.web.http.redirections.entrypoint.permanent=true
             - --providers.kubernetescrd
             - --certificatesresolvers.cert-resolver.acme.tlschallenge
             - --certificatesresolvers.cert-resolver.acme.email=martin.nirtl@dynatrace.com
             - --certificatesresolvers.cert-resolver.acme.storage=acme.json
             # Please note that this is the staging Let's Encrypt server.
             # Once you get things working, you should remove that whole line altogether.
-            # - --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+            # - --certificatesresolvers.cert-resolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
           ports:
             - name: web
               containerPort: 80
