@@ -29,8 +29,8 @@ The signup procedure can be described in 6 simple steps:
 
 There are two ways to run this demo:
 
-- [Docker Compose](https://github.com/martinnirtl/otel-demo/tree/master/kubernetes) - OneAgent will be deployed as Docker container
-- [Kubernetes](https://github.com/martinnirtl/otel-demo/tree/master/compose) - OneAgent deployment via Dynatrace Operator
+- [Docker Compose](https://github.com/martinnirtl/otel-demo/tree/master/compose) - OneAgent will be deployed as Docker container
+- [Kubernetes](https://github.com/martinnirtl/otel-demo/tree/master/kubernetes) - OneAgent deployment via Dynatrace Operator
 
 ## Get Hands-on Experience
 
