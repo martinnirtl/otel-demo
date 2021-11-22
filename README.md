@@ -2,7 +2,7 @@
 
 Microservice-based demo project showcasing Dynatrace's tracing functionality in combination with OpenTelemetry.
 
-![Architecture](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/architecture.png)
+![Architecture](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/architecture-diagram.png)
 
 ## The Showcase
 
