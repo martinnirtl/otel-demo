@@ -25,8 +25,6 @@ The signup procedure can be described in 6 simple steps:
 5. After rendering the email, the Template Service stores the result in the Redis cache
 6. Mail Service invokes an external mail-as-a-service provider
 
----
-
 ## Run the Demo
 
 There are two ways to run this demo:
