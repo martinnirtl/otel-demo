@@ -14,16 +14,25 @@ While there are some surrounding services to make this a more representative exa
 2. Mail Service
 3. Template Service
 
-Backend Service and Template Service are going to be monitored via the OneAgent and will create some OpenTelemetry spans. The service in the middle - the Mail Service - is going to be instrumented with OpenTelemetry only.
+Backend Service and Template Service are going to be monitored via the OneAgent and will create some custom OpenTelemetry spans via manual instrumentation. The service in the middle - the Mail Service - is going to be instrumented with OpenTelemetry only.
+
+The signup procedure can be described in 6 simple steps:
+
+1. Signup-endpoint gets called with an HTTP-post call having email, name and password in the body
+2. After email address validation, the user gets stored into the mongo database
+3. Backend Service calls Mail Service's send-endpoint with an HTTP-post call
+4. Mail Service calls Template Service with an HTTP-post call to retrieve the rendered email
+5. After rendering the email, the Template Service stores the result in the Redis cache
+6. Mail Service invokes an external mail-as-a-service provider
 
 ---
 
 ## Run the Demo
 
-There are two ways to easily run this demo:
+There are two ways to run this demo:
 
-- [Docker Compose](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/run-docker-compose.md)
-- [Kubernetes](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/run-kubernetes.md)
+- [Docker Compose](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/run-docker-compose.md) - OneAgent will be deployed as Docker container
+- [Kubernetes](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/run-kubernetes.md) - OneAgent deployment via Dynatrace Operator
 
 ---
 
