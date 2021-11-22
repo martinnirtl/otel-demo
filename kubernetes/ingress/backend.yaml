@@ -9,7 +9,7 @@ spec:
     - web
     - websecure
   routes:
-    - match: Host(`backend.20.79.194.63.nip.io`)
+    - match: Host(`backend.otel.demos.dynatrace.martinnirtl.com`)
       kind: Rule
       services:
         - name: backend
