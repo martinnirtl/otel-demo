@@ -32,8 +32,6 @@ There are two ways to run this demo:
 - [Docker Compose](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/run-docker-compose.md) - OneAgent will be deployed as Docker container
 - [Kubernetes](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/run-kubernetes.md) - OneAgent deployment via Dynatrace Operator
 
----
-
 ## Get Hands-on Experience
 
 ## If you want to get some hands-on experience in instrumenting NodeJS apps, check out the [instrumentation tutorial](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/instrumentation-tutorial.md).
