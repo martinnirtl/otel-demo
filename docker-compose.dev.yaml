@@ -1,0 +1,80 @@
+version: '2'
+
+services:
+  mongo:
+    image: mongo:5.0.4
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=backend
+    ports:
+      - '27017:27017'
+    volumes:
+      - ../services/mongodb/init:/docker-entrypoint-initdb.d
+      - ../services/mongodb/data:/data/db
+
+  redis:
+    image: redis:5.0.13
+    ports:
+      - '6379:6379'
+    volumes:
+      - ../services/redis/data:/data
+
+  template-service:
+    image: martinnirtl/demos.opentelemetry.template-service:latest
+    entrypoint: ['tail', '-f', '/dev/null']
+    environment:
+      - PORT=4200
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=2
+    ports:
+      - '4200:4200'
+
+  mail-service:
+    image: martinnirtl/demos.opentelemetry.mail-service:latest
+    entrypoint: ['node', 'src/start.js']
+    environment:
+      - PORT=4100
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=1
+      - TEMPLATE_SERVICE_BASE_URL=http://template-service:4200
+      - OTEL_EXPORT_ENABLE=true
+      - OTEL_ENDPOINT_URL=grpc://otel-collector:4317 # The CollectorTraceExporter in Node expects the URL to only be the hostname. It will not work with /v1/traces.
+      # - OTEL_AUTH_HEADER= # Using otel-collector as gateway.
+    ports:
+      - '4100:4100'
+
+  backend:
+    image: martinnirtl/demos.opentelemetry.backend:latest
+    environment:
+      - PORT=4000
+      - DB_CONNECTION_URL=mongodb://backend:swordfish@mongo:27017/backend # Use variable expansion for username and password.
+      - MAIL_SERVICE_BASE_URL=http://mail-service:4100
+      - VERIFICATION_SERVICE_URL=verification-service:4010
+    ports:
+      - '4000:4000'
+
+  loadgen:
+    image: martinnirtl/demos.opentelemetry.loadgen:latest
+    environment:
+      - BACKEND_BASE_URL=http://backend:4000
+
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    command: ['--config=/etc/otel-collector-config.yaml']
+    environment:
+      - OTEL_ENDPOINT_URL
+      - OTEL_AUTH_HEADER
+    ports:
+      # - "1888:1888"   # pprof extension
+      - '8888:8888' # Prometheus metrics exposed by the collector
+      # - "8889:8889"   # Prometheus exporter metrics
+      # - "13133:13133" # health_check extension
+      - '4317:4317' # OTLP gRPC receiver
+      - '4318:4318' # OTLP HTTP receiver
+      # - "55670:55679" # zpages extension
+    volumes:
+      - ../services/otel/config.yaml:/etc/otel-collector-config.yaml
