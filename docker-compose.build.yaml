@@ -15,8 +15,12 @@ services:
 
   backend:
     image: martinnirtl/demos.opentelemetry.backend:latest
-    build: services/backend
+    build:
+      context: services
+      dockerfile: backend/Dockerfile
 
   loadgen:
     image: martinnirtl/demos.opentelemetry.loadgen:latest
-    build: services/loadgen
+    build:
+      context: services
+      dockerfile: loadgen/Dockerfile
