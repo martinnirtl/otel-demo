@@ -6,6 +6,7 @@ const { nanoid } = require('nanoid');
 
 const logging = require('./logging');
 const { cache } = require('./cache');
+const { client: templateService } = require('./templateService');
 
 const tracer = api.trace.getTracer('index.js');
 
@@ -21,6 +22,7 @@ app.post('/send', async (req, res) => {
   const span = tracer.startSpan('Extracting variables', { attributes: { 'app.mail.sid': sid } });
 
   const template = _.get(req, 'body.template');
+  let subject = _.get(req, 'body.subject');
   let text = _.get(req, 'body.text');
 
   span.end();
@@ -33,8 +35,22 @@ app.post('/send', async (req, res) => {
     api.propagation.inject(context, headers);
 
     if (template) {
-      req.log.info('calling template-service to render text...');
-      text = await axios.post(process.env.TEMPLATE_SERVICE_BASE_URL + '/render', { template }, { headers });
+      req.log.info(template, 'calling template-service to render text...');
+      // text = await axios.post(process.env.TEMPLATE_SERVICE_BASE_URL + '/render', { template }, { headers });
+      const renderedTemplate = await new Promise((resolve, reject) =>
+        templateService.render(template, (error, response) => {
+          req.log.info({ error, response }, 'received response');
+
+          if (error || !response.success) {
+            return reject(error || new Error('Invokation of template-service failed!'));
+          }
+
+          return resolve(response);
+        }),
+      );
+
+      subject = renderedTemplate.subject;
+      text = renderedTemplate.body;
     }
 
     if (!text) {
@@ -42,14 +58,15 @@ app.post('/send', async (req, res) => {
     }
 
     req.log.info('sending mail payload to mail-provider...');
-    const { data } = await axios.get(`https://httpbin.org/headers`, {
-      // ...body,
-      // template: undefined,
-      // text,
-      headers,
-    });
-    req.log.info('mail sent');
-    req.log.info(data);
+    // const { data } = await axios.post(`https://httpbin.org/headers`, {
+    //   data: {
+    //     subject,
+    //     text,
+    //   },
+    //   headers,
+    // });
+    // req.log.info('mail sent');
+    // req.log.info(data);
 
     if (sid) {
       req.log.info('persisting status in db...');
@@ -75,7 +92,7 @@ app.get('/status/:id', async (req, res) => {
   return res.status(200).send({ id, status });
 });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4100;
 
 const server = app.listen(port, () => logging.logger.info(`listening on port ${port}`));
 

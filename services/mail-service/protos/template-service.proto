@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package templateservice;
+
+service TemplateService {
+  rpc render(RenderRequest) returns (RenderResponse);
+}
+
+message RenderRequest {
+  string name = 1;
+  map<string, string> vars = 2;
+}
+
+message RenderResponse {
+  bool success = 1;
+  string subject = 2;
+  string body = 3;
+}

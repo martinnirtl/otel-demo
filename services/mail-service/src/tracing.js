@@ -1,5 +1,6 @@
 const { SimpleSpanProcessor, ConsoleSpanExporter, BatchSpanProcessor } = require('@opentelemetry/sdk-trace-base'); // exchange if possible
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
+const { GrpcInstrumentation } = require('@opentelemetry/instrumentation-grpc');
 const { IORedisInstrumentation } = require('@opentelemetry/instrumentation-ioredis');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 // const { CollectorTraceExporter } = require('@opentelemetry/exporter-collector');
@@ -49,5 +50,10 @@ tracerProvider.register();
 
 registerInstrumentations({
   tracerProvider,
-  instrumentations: [new IORedisInstrumentation(), new HttpInstrumentation(), new ExpressInstrumentation()],
+  instrumentations: [
+    new GrpcInstrumentation(),
+    new IORedisInstrumentation(),
+    new HttpInstrumentation(),
+    new ExpressInstrumentation(),
+  ],
 });
