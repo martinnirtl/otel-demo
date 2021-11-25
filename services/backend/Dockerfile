@@ -10,11 +10,12 @@ COPY . .
 ENV NODE_ENV production
 ENV SERVICE_NAME backend
 
+USER node
+EXPOSE 4000
+
 # NOTE enables graceful shutdown > https://medium.com/@gchudnov/trapping-signals-in-docker-containers-7a57fdda7d86
 ENTRYPOINT ["node", "src/index.js"]
 
-USER node
-EXPOSE 4000
 
 # https://nodejs.org/en/docs/guides/nodejs-docker-webapp/
 # https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md
