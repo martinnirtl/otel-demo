@@ -20,9 +20,9 @@ OpenTelemetry uses the [W3C Trace Context](https://www.w3.org/TR/trace-context) 
 
 ### Add Rule for Custom Process Monitoring
 
-As all containers will run on the same (Docker) host, the OneAgent would naturally inject into all containers. Hence, we need to configure an exclusion rule to prevent the OneAgent from injecting into the Mail-Service and the Load Generator.
+As all containers will run on the same (Docker) host, the OneAgent would naturally inject into all containers. Hence, we need to configure an exclusion rule to prevent the OneAgent from injecting into the Mail Service and the Load Generator.
 
-> Mail Service will be completely instrumented with OpenTelemetry.
+> Remember: Mail Service will be completely instrumented with OpenTelemetry.
 
 Go to **Settings > Processes and containers > Custom process monitoring rules** and setup the following rule:
 
