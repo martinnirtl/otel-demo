@@ -1,7 +1,7 @@
 const Redis = require('ioredis');
-const { logger } = require('./logging');
+const { log } = require('./logging');
 
-logger.info('connecting to redis cache...');
+log.info('connecting to redis cache...');
 
 exports.cache = new Redis({
   host: process.env.REDIS_HOST || 'localhost',
@@ -11,3 +11,11 @@ exports.cache = new Redis({
 });
 
 exports.keyify = (prefix, ...keys) => [prefix, ...keys].join(':');
+
+// TODO maybe need to switch over to use shutdown hook lib
+process.on('SIGINT', async () => {
+  log.info('received a SIGINT signal. going down...');
+
+  log.info('disconnecting from redis cache...');
+  await this.cache.disconnect();
+});

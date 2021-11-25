@@ -1,13 +1,14 @@
-const pino = require('pino-http')({
+const pino = require('pino')({
   name: process.env.SERVICE_NAME,
   base: undefined,
+  messageKey: 'content',
+  nestedKey: 'meta',
   formatters: {
-    level(label, _number) {
+    level(label) {
       return { level: label };
     },
   },
   level: process.env.LOG_LEVEL || 'debug',
-  prettyPrint: process.env.LOG_PRETTY === 'true' || process.env.NODE_ENV !== 'production',
 });
 
-module.exports = pino;
+module.exports = { log: pino };

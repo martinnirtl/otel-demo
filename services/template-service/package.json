@@ -4,23 +4,25 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config src/index.js"
+    "dev": "nodemon -r dotenv/config src/index.js | pino-pretty -cm content"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@grpc/grpc-js": "^1.4.4",
+    "@grpc/proto-loader": "^0.6.7",
     "@opentelemetry/api": "^1.0.3",
     "@opentelemetry/instrumentation": "^0.24.0",
     "@opentelemetry/instrumentation-ioredis": "^0.24.0",
     "@opentelemetry/tracing": "^0.24.0",
-    "express": "^4.17.1",
     "ioredis": "^4.27.7",
-    "lodash": "^4.17.21",
-    "pino-http": "^5.7.0"
+    "pino": "^7.4.0"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
-    "nodemon": "^2.0.12"
+    "eslint": "^8.3.0",
+    "nodemon": "^2.0.12",
+    "pino-pretty": "^7.2.0"
   }
 }
