@@ -1,7 +1,14 @@
 const faker = require('faker');
 const axios = require('axios').default;
+const express = require('express');
 
 const { log } = require('./logging');
+
+const app = express();
+
+app.use(express.json());
+
+app.get('/', (req, res) => res.send('API coming soon or maybe never :)) 24.11.2021'));
 
 const doSignUp = async () => {
   log.info('generating user...');
