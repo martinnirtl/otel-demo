@@ -11,19 +11,20 @@ services:
     ports:
       - '27017:27017'
     volumes:
-      - ../services/mongodb/init:/docker-entrypoint-initdb.d
-      - ../services/mongodb/data:/data/db
+      - ./services/mongodb/init:/docker-entrypoint-initdb.d
+      - ./services/mongodb/data:/data/db
 
   redis:
     image: redis:5.0.13
     ports:
       - '6379:6379'
     volumes:
-      - ../services/redis/data:/data
+      - ./services/redis/data:/data
 
   template-service:
     image: martinnirtl/demos.opentelemetry.template-service:latest
-    entrypoint: ['tail', '-f', '/dev/null']
+    build: services/template-service
+    # entrypoint: ['tail', '-f', '/dev/null']
     environment:
       - PORT=4200
       - REDIS_HOST=redis
@@ -34,13 +35,14 @@ services:
 
   mail-service:
     image: martinnirtl/demos.opentelemetry.mail-service:latest
-    entrypoint: ['node', 'src/start.js']
+    build: services/mail-service
+    # entrypoint: ['tail', '-f', '/dev/null']
     environment:
       - PORT=4100
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_DB=1
-      - TEMPLATE_SERVICE_BASE_URL=http://template-service:4200
+      - TEMPLATE_SERVICE_GRPC=template-service:4200
       - OTEL_EXPORT_ENABLE=true
       - OTEL_ENDPOINT_URL=grpc://otel-collector:4317 # The CollectorTraceExporter in Node expects the URL to only be the hostname. It will not work with /v1/traces.
       # - OTEL_AUTH_HEADER= # Using otel-collector as gateway.
@@ -49,6 +51,8 @@ services:
 
   backend:
     image: martinnirtl/demos.opentelemetry.backend:latest
+    build: services/backend
+    # entrypoint: ['tail', '-f', '/dev/null']
     environment:
       - PORT=4000
       - DB_CONNECTION_URL=mongodb://backend:swordfish@mongo:27017/backend # Use variable expansion for username and password.
@@ -59,6 +63,8 @@ services:
 
   loadgen:
     image: martinnirtl/demos.opentelemetry.loadgen:latest
+    build: services/loadgen
+    # entrypoint: ['tail', '-f', '/dev/null']
     environment:
       - BACKEND_BASE_URL=http://backend:4000
 
@@ -77,4 +83,4 @@ services:
       - '4318:4318' # OTLP HTTP receiver
       # - "55670:55679" # zpages extension
     volumes:
-      - ../services/otel/config.yaml:/etc/otel-collector-config.yaml
+      - ./services/otel/config.yaml:/etc/otel-collector-config.yaml
