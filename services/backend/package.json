@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config src/index.js"
+    "dev": "nodemon -r dotenv/config src/index.js | pino-pretty -cm content"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +24,8 @@
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
-    "nodemon": "^2.0.12"
+    "eslint": "^8.3.0",
+    "nodemon": "^2.0.12",
+    "pino-pretty": "^7.2.0"
   }
 }

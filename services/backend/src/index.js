@@ -7,7 +7,6 @@ const exitHook = require('async-exit-hook');
 
 const logging = require('./logging');
 const { connect } = require('./db');
-const { client: verify } = require('./verification');
 
 const tracer = opentelemetry.trace.getTracer('index.js');
 
@@ -38,13 +37,12 @@ app.get('/users/:email', async (req, res) => {
 app.post('/signup', async (req, res) => {
   const user = _.get(req, 'body');
 
-  req.log.info('signing up new user:');
-  req.log.debug(user);
+  req.log.debug(user, 'signing up new user');
 
   try {
-    const valid = await new Promise((resolve, _reject) =>
-      verify.isValidEmail({ email: user.email }, (error, { valid }) => resolve(valid)),
-    );
+    // TODO verify email by regex
+    const valid = true;
+
     req.log.debug('isValidEmail: ' + valid);
 
     if (!valid) {
