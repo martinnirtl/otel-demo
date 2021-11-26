@@ -15,10 +15,6 @@ const { logger } = require('./logging');
 
 logger.info('initializing tracing module...');
 
-const collectorOptions = {
-  url: process.env.OTEL_ENDPOINT_URL,
-};
-
 const tracerProvider = new NodeTracerProvider({
   resource: new Resource({
     [SemanticResourceAttributes.SERVICE_NAME]: 'mail-service',
@@ -26,7 +22,9 @@ const tracerProvider = new NodeTracerProvider({
 });
 
 if (process.env.OTEL_ENDPOINT_URL) {
-  const exporter = new CollectorTraceExporter(collectorOptions);
+  const exporter = new CollectorTraceExporter({
+    url: process.env.OTEL_ENDPOINT_URL,
+  });
   tracerProvider.addSpanProcessor(new SimpleSpanProcessor(exporter)); // using simpleSpanProcessor as otel-collector and grpc exporter in place
 
   // tracerProvider.addSpanProcessor(new BatchSpanProcessor(exporter, {
