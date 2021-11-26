@@ -37,7 +37,7 @@ Both Mail Service and Load Generator have the respective variable set on the ima
 
 ## 2. Configure the Deployment
 
-Before we can launch our container, we need to configure the following variables. You can simple copy the content from **.env-sample** or below and create a file named **.env** next to the **docker-compose.yaml** in this folder.
+Before we can launch our containers, we need to configure the following variables. You can simple copy the file **.env-sample** or copy the snippet from below and create a file named **.env** next to the **docker-compose.yaml** in this folder (compose dir).
 
 ```env
 OS_TYPE=unix
@@ -45,7 +45,7 @@ DT_TENANT_BASEURL=
 DT_TOKEN=
 ```
 
-> `OS_TYPE` can be either _unix_ or _windows_
+> `OS_TYPE` can be either _unix_ or _windows_.
 > Create a token via Access Tokens menu with _Ingest OpenTelemetry traces_ and _PaaS integration - Installer download_ permissions assigned.
 
 ## 3. Run the Demo
