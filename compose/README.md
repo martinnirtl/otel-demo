@@ -8,6 +8,8 @@ Prerequisits:
 - Docker Compose: https://docs.docker.com/compose/install (usually comes with Docker Desktop)
 - Dynatrace Tenant/Environment + API Token
 
+> You can verify your docker(-compose) installation by running `docker ps` or `docker-compose ps`.
+
 ## 1. Dynatrace Configuration
 
 In order to get the most out of this demo, we need to apply some settings to your Dynatrace environment.
@@ -51,11 +53,15 @@ ONEAGENT_INSTALLER_DOWNLOAD_TOKEN=<TENANT DEPLOYMENT TOKEN>
 
 ## 3. Run the Demo
 
-Finally, we can run the demo. To allow the database to initialize, start Redis and Mongo DB first via `docker compose up -d mongo redis`. After some seconds you can check their status via `docker compose ps` and you should see both containers up and running:
+Finally, we can run the demo. If you inspect the _docker-compose.yaml_ in this directory, you will find a OneAgent service defined, as we are going to use a containerized agent for this tutorial. So let's start our lovely OneAgent with `docker-compose up -d oneagent`.
+
+> Check out the [Dynatrace docs](https://www.dynatrace.com/support/help/setup-and-configuration/setup-on-container-platforms/docker/set-up-dynatrace-oneagent-as-docker-container/) if you want to learn more about running the OneAgent in Docker.
+
+Next, we start Redis and Mongo DB via `docker compose up -d mongo redis`. The database will get initialized at the first startup. After some seconds you can check their status via `docker compose ps` and you should see both containers up and running:
 
 ![Settings Distributed Tracing](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/dockercompose-ps-redismongo.png)
 
-Afterwards, we can run the other containers with `docker-compose up -d`. Again, we can check the status of all containers with `docker-compose ps`:
+Afterwards, we can run all other containers with `docker-compose up -d`. Again, we can check the status of all containers with `docker-compose ps`:
 
 ![Settings Distributed Tracing](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/dockercompose-ps-all.png)
 
