@@ -28,6 +28,8 @@ As all containers will run on the same (Docker) host, the OneAgent would natural
 
 Go to **Settings > Processes and containers > Custom process monitoring rules** and setup the following rule:
 
+COPY variable name from here: `DISABLE_DEEP_MONITORING`
+
 ![Settings Distributed Tracing](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/settings-customprocessmonitoringrules.png)
 
 Both Mail Service and Load Generator have the respective variable set on the image at build-time:
