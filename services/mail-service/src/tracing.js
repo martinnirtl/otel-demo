@@ -1,4 +1,4 @@
-const { SimpleSpanProcessor, ConsoleSpanExporter, BatchSpanProcessor } = require('@opentelemetry/sdk-trace-base'); // exchange if possible
+const { SimpleSpanProcessor, ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base'); // exchange if possible
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
 const { GrpcInstrumentation } = require('@opentelemetry/instrumentation-grpc');
 const { IORedisInstrumentation } = require('@opentelemetry/instrumentation-ioredis');
@@ -15,13 +15,6 @@ const { logger } = require('./logging');
 
 logger.info('initializing tracing module...');
 
-// const collectorOptions = {
-//   url: process.env.OTEL_ENDPOINT_URL,
-//   headers: {
-//     Authorization: process.env.OTEL_AUTH_HEADER,
-//   },
-// };
-
 const collectorOptions = {
   url: process.env.OTEL_ENDPOINT_URL,
 };
@@ -32,16 +25,18 @@ const tracerProvider = new NodeTracerProvider({
   }),
 });
 
-if (process.env.OTEL_EXPORT_ENABLE === 'true') {
+if (process.env.OTEL_ENDPOINT_URL) {
   const exporter = new CollectorTraceExporter(collectorOptions);
+  tracerProvider.addSpanProcessor(new SimpleSpanProcessor(exporter)); // using simpleSpanProcessor as otel-collector and grpc exporter in place
+
   // tracerProvider.addSpanProcessor(new BatchSpanProcessor(exporter, {
   //   // The maximum queue size. After the size is reached spans are dropped.
   //   maxQueueSize: 1000,
   //   // The interval between two consecutive exports
   //   scheduledDelayMillis: 30000,
   // }));
-  tracerProvider.addSpanProcessor(new SimpleSpanProcessor(exporter)); // using simpleSpanProcessor as otel-collector and grpc exporter in place
 }
+
 if (process.env.NODE_ENV !== 'production') {
   tracerProvider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
 }
