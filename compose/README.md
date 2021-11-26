@@ -46,17 +46,18 @@ DT_TOKEN=
 ```
 
 > `OS_TYPE` can be either _unix_ or _windows_.
+>
 > Create a token via Access Tokens menu with _Ingest OpenTelemetry traces_ and _PaaS integration - Installer download_ permissions assigned.
 
 ## 3. Run the Demo
 
 Before we run some `docker-compose` commands, make sure you are in the **compose** folder or navigate into it via `cd compose`.
 
-Finally, we can run the demo. If you inspect the [docker-compose.yaml](https://github.com/martinnirtl/otel-demo/blob/master/compose/docker-compose.yaml) in this directory, you will find a OneAgent service defined, as we are going to use a containerized agent for this tutorial. So let's start our lovely OneAgent with `docker-compose up -d oneagent`.
+Finally, we can start with running the demo. If you inspect the [docker-compose.yaml](https://github.com/martinnirtl/otel-demo/blob/master/compose/docker-compose.yaml) in this directory, you will find a OneAgent service defined as we are going to use a containerized agent for this tutorial. So let's start our lovely OneAgent with `docker-compose up -d oneagent`.
 
 > Check out the [Dynatrace docs](https://www.dynatrace.com/support/help/setup-and-configuration/setup-on-container-platforms/docker/set-up-dynatrace-oneagent-as-docker-container/) if you want to learn more about running the OneAgent in Docker.
 
-Next, we start Redis and Mongo DB via `docker compose up -d mongo redis`. The database will get initialized at the first startup. After some seconds you can check their status via `docker compose ps` and you should see both containers up and running:
+Next, we start Redis and MongoDB via `docker compose up -d mongo redis`. The database will get initialized at the first startup. After some seconds you can check their status via `docker compose ps` and you should see our three containers up and running:
 
 ![Settings Distributed Tracing](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/dockercompose-ps-redismongo.png)
 
