@@ -22,13 +22,11 @@ OpenTelemetry uses the [W3C Trace Context](https://www.w3.org/TR/trace-context) 
 
 ### Add Rule for Custom Process Monitoring
 
-As all containers will run on the same (Docker) host, the OneAgent would naturally inject into all containers. Hence, we need to configure an exclusion rule to prevent the OneAgent from injecting into the Mail Service and the Load Generator.
-
-> Remember: Mail Service will be completely instrumented with OpenTelemetry.
+As all containers will run on the same (Docker) host, the OneAgent would naturally inject into all containers. Hence, we need to configure an exclusion rule to prevent the OneAgent from injecting into the Mail Service and the Load Generator. Remember, the Mail Service will be completely instrumented with OpenTelemetry and the Load Generator just simulates traffic.
 
 Go to **Settings > Processes and containers > Custom process monitoring rules** and setup the following rule:
 
-COPY variable name from here: `DISABLE_DEEP_MONITORING`
+> COPY variable name from here: `DISABLE_DEEP_MONITORING`
 
 ![Settings Distributed Tracing](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/settings-customprocessmonitoringrules.png)
 
@@ -39,23 +37,22 @@ Both Mail Service and Load Generator have the respective variable set on the ima
 
 ## 2. Configure the Deployment
 
-Before we can launch our container, we need to configure the following variables. You can simple copy the content from **.env-sample** or below and create a file named **.env** next to the **docker-compose.yaml** in this [directory](https://github.com/martinnirtl/otel-demo/tree/master/compose).
+Before we can launch our container, we need to configure the following variables. You can simple copy the content from **.env-sample** or below and create a file named **.env** next to the **docker-compose.yaml** in this folder.
 
 ```env
-OTEL_EXPORT_ENABLE=true
-OTEL_ENDPOINT_URL=<TENANT URL>/api/v2/otlp
-OTEL_AUTH_HEADER=<TENANT API TOKEN>
-
-ONEAGENT_INSTALLER_SCRIPT_URL=<TENANT URL>/api/v1/deployment/installer/agent/unix/default/latest
-ONEAGENT_INSTALLER_DOWNLOAD_TOKEN=<TENANT DEPLOYMENT TOKEN>
-
+OS_TYPE=unix
+DT_TENANT_BASEURL=
+DT_TOKEN=
 ```
 
-> You can also create only one token with _Ingest OpenTelemetry traces_ and _PaaS integration - Installer download_ permissions assigned.
+> `OS_TYPE` can be either _unix_ or _windows_
+> Create a token via Access Tokens menu with _Ingest OpenTelemetry traces_ and _PaaS integration - Installer download_ permissions assigned.
 
 ## 3. Run the Demo
 
-Finally, we can run the demo. If you inspect the _docker-compose.yaml_ in this directory, you will find a OneAgent service defined, as we are going to use a containerized agent for this tutorial. So let's start our lovely OneAgent with `docker-compose up -d oneagent`.
+Before we run some `docker-compose` commands, make sure you are in the **compose** folder or navigate into it via `cd compose`.
+
+Finally, we can run the demo. If you inspect the [docker-compose.yaml](https://github.com/martinnirtl/otel-demo/blob/master/compose/docker-compose.yaml) in this directory, you will find a OneAgent service defined, as we are going to use a containerized agent for this tutorial. So let's start our lovely OneAgent with `docker-compose up -d oneagent`.
 
 > Check out the [Dynatrace docs](https://www.dynatrace.com/support/help/setup-and-configuration/setup-on-container-platforms/docker/set-up-dynatrace-oneagent-as-docker-container/) if you want to learn more about running the OneAgent in Docker.
 
