@@ -12,14 +12,11 @@ services:
     #   - '27017:27017'
     volumes:
       - ../services/mongodb/init:/docker-entrypoint-initdb.d
-      - ../services/mongodb/data:/data/db
 
   redis:
     image: redis:5.0.13
     # ports:
     #   - '6379:6379'
-    volumes:
-      - ../services/redis/data:/data
 
   template-service:
     image: martinnirtl/demos.opentelemetry.template-service:latest
