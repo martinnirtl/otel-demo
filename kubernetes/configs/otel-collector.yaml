@@ -9,22 +9,23 @@ data:
         protocols:
           grpc:
             endpoint: 0.0.0.0:4317
-          http:
-            endpoint: 0.0.0.0:4318
+          # http:
+          #   endpoint: 0.0.0.0:4318
 
     exporters:
       otlphttp:
         endpoint: '${OTEL_ENDPOINT_URL}'
         headers: { 'Authorization': '${OTEL_AUTH_HEADER}' }
 
-      logging:
-        loglevel: debug
-        sampling_initial: 5
-        sampling_thereafter: 200
+      # logging:
+      #   loglevel: debug
+      #   sampling_initial: 5
+      #   sampling_thereafter: 200
 
     service:
       pipelines:
         traces:
           receivers: [otlp]
           processors: []
-          exporters: [otlphttp, logging]
+          exporters: [otlphttp]
+          # exporters: [otlphttp, logging]
