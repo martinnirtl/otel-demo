@@ -2,10 +2,10 @@ db.createUser({
   user: 'backend',
   pwd: 'swordfish',
   roles: [
-      {
-          role: 'readWrite',
-          db: 'backend',
-      },
+    {
+      role: 'readWrite',
+      db: 'backend',
+    },
   ],
 });
 
@@ -13,6 +13,4 @@ db.createUser({
 
 db.createCollection('users', { capped: false });
 
-db.users.insert([
-  { email: 'martin.nirtl@gmail.com', password: 'some-hashed-pw', name: 'Martin Nirtl' },
-]);
+db.users.insert([{ email: 'me@martinnirtl.com', password: 'some-hashed-pw', name: 'Martin Nirtl' }]);
