@@ -4,11 +4,12 @@ The following guide will help you run this demo project in Docker Compose. If yo
 
 Prerequisits:
 
+- Linux or Windows host
 - Docker: https://docs.docker.com/get-docker
 - Docker Compose: https://docs.docker.com/compose/install (usually comes with Docker Desktop)
-- Dynatrace Tenant/Environment + API Token
+- Dynatrace Tenant or Environment
 
-> You can verify your docker(-compose) installation by running `docker ps` or `docker-compose ps`.
+> You can verify your docker(-compose) installation by running `docker version` or `docker-compose version`.
 
 ## 1. Dynatrace Configuration
 
@@ -47,7 +48,7 @@ DT_TOKEN=
 
 > `OS_TYPE` can be either _unix_ or _windows_.
 >
-> Create a token via Access Tokens menu with _Ingest OpenTelemetry traces_ and _PaaS integration - Installer download_ permissions assigned.
+> Create a token via Access Tokens menu with **Ingest OpenTelemetry traces** and **PaaS integration - Installer download** permissions assigned.
 
 ## 3. Run the Demo
 
@@ -67,4 +68,14 @@ Afterwards, we can run all other containers with `docker-compose up -d`. Again, 
 
 ## 4. Explore Data in Dynatrace
 
-As our demo app is now up and running, we want to check the data in Dynatrace.
+As our demo app is now up and running, we want to check the data in Dynatrace. Let's visit the **Hosts** menu and search for the host `OpenTelemetry Demo Host`. On the host details page, look for the Backend process ():
+
+![Processes and Containers](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/dt-processesandcontainers.png)
+
+From the process, we can easily navigate to the Backend service and visit the PurePaths view. Finally, select a transaction to see the PurePath enriched by OpenTelemetry spans and explore the e2e visibility and code-level insights.
+
+![Processes and Containers](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/dt-purepath.png)
+
+### Having problems or facing issues?
+
+Reach out to me via email: [martin.nirtl@dynatrace.com](mailto:martin.nirtl@dynatrace.com)
