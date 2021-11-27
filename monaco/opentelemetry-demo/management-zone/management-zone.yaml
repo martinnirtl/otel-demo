@@ -1,0 +1,5 @@
+config:
+  - OpenTelemetryDemo: OpenTelemetryDemo.json
+
+OpenTelemetryDemo:
+  - name: OpenTelemetry Demo

@@ -1,0 +1,28 @@
+{
+  "description": "",
+  "dimensionalRules": [],
+  "entitySelectorBasedRules": [],
+  "name": "{{.name}}",
+  "rules": [
+    {
+      "conditions": [
+        {
+          "comparisonInfo": {
+            "caseSensitive": true,
+            "negate": false,
+            "operator": "EQUALS",
+            "type": "STRING",
+            "value": "opentelemetry-demo"
+          },
+          "key": {
+            "attribute": "HOST_GROUP_NAME",
+            "type": "STATIC"
+          }
+        }
+      ],
+      "enabled": true,
+      "propagationTypes": ["PROCESS_GROUP_TO_HOST", "PROCESS_GROUP_TO_SERVICE"],
+      "type": "PROCESS_GROUP"
+    }
+  ]
+}
