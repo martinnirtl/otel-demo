@@ -35,7 +35,7 @@ if (process.env.OTEL_ENDPOINT_URL) {
   // }));
 }
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && process.env.OTEL_DEBUG) {
   tracerProvider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
 }
 
