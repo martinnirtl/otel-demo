@@ -2,7 +2,7 @@
 
 The following guide will help you run this demo project in Docker Compose. If you want to run it in Kubernetes, check out this [guide](https://github.com/martinnirtl/otel-demo/tree/master/kubernetes).
 
-Prerequisits:
+### Prerequisits:
 
 - Linux or Windows host
 - Docker: https://docs.docker.com/get-docker
@@ -48,7 +48,11 @@ DT_TOKEN=
 
 > `OS_TYPE` can be either _unix_ or _windows_.
 >
-> Create a token via Access Tokens menu with **Ingest OpenTelemetry traces** and **PaaS integration - Installer download** permissions assigned.
+> Create a token via Access Tokens menu with **Ingest OpenTelemetry traces**, **PaaS integration - Installer download** and optionally with **Write Configuration (API v1)** (if you want to run step 2.1) permissions assigned.
+
+### 2.1 Create Management Zone via Monaco
+
+If you want to create the Managment Zone `OpenTelemetry Demo` containing all entities of this demo, and get an introduction to the Monaco tool, check out this 5/10-minute guide [here](https://github.com/martinnirtl/otel-demo/tree/master/monaco).
 
 ## 3. Run the Demo
 
@@ -67,6 +71,10 @@ Afterwards, we can run all other containers with `docker-compose up -d`. Again, 
 ![Settings Distributed Tracing](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/dockercompose-ps-all.png)
 
 ## 4. Explore Data in Dynatrace
+
+We will now visit our Backend Service in Dynatrace and check the distributed traces there.
+
+> If you have set up the Management Zone, you can directly go to the services view and filter by the **OpenTelemtry Demo** Management Zone. Visit the Backend Service and check out a PurePath.
 
 As our demo is now up and running, we want to check the data in Dynatrace. Let's visit the **Hosts** menu and search for the host `OpenTelemetry Demo Host`. On the host details page, look for the Backend process (see first process in screenshot below):
 
