@@ -8,9 +8,12 @@ const templates = {
   }),
 };
 
-exports.render = async (call, callback) => {
-  const template = call.request.name;
-  const vars = call.request.vars;
+exports.render = async ({ request, metadata }, callback) => {
+  // log.debug({ traceparent: metadata.get('traceparent')[0] }, 'rendering got called');
+  log.debug({ traceparent: metadata.getMap() }, 'rendering got called');
+
+  const template = request.name;
+  const vars = request.vars;
   const key = keyify(template, Object.values(vars));
 
   log.debug('created key: ' + key);
