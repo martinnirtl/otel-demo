@@ -58,14 +58,14 @@ app.post('/send', async (req, res) => {
     }
 
     req.log.info('sending mail payload to mail-provider...');
-    // const { data } = await axios.post(`https://httpbin.org/headers`, {
-    //   data: {
-    //     subject,
-    //     text,
-    //   },
-    //   headers,
-    // });
-    // req.log.info('mail sent');
+    const { data } = await axios.post(`https://httpbin.org/anything`, {
+      data: {
+        subject,
+        text,
+      },
+      headers,
+    });
+    req.log.info(data, 'mail sent');
     // req.log.info(data);
 
     if (sid) {
