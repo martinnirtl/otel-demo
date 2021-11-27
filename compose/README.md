@@ -68,11 +68,11 @@ Afterwards, we can run all other containers with `docker-compose up -d`. Again, 
 
 ## 4. Explore Data in Dynatrace
 
-As our demo app is now up and running, we want to check the data in Dynatrace. Let's visit the **Hosts** menu and search for the host `OpenTelemetry Demo Host`. On the host details page, look for the Backend process ():
+As our demo is now up and running, we want to check the data in Dynatrace. Let's visit the **Hosts** menu and search for the host `OpenTelemetry Demo Host`. On the host details page, look for the Backend process (see first process in screenshot below):
 
 ![Processes and Containers](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/dt-processesandcontainers.png)
 
-From the process, we can easily navigate to the Backend service and visit the PurePaths view. Finally, select a transaction to see the PurePath enriched by OpenTelemetry spans and explore the e2e visibility and code-level insights.
+From the process, we can easily navigate to the Backend Service and visit the PurePaths view. Finally, select a transaction to see the PurePath enriched by OpenTelemetry spans and explore the e2e visibility and code-level insights made possible by the OpenTelemetry span ingest API.
 
 ![Processes and Containers](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/dt-purepath.png)
 
