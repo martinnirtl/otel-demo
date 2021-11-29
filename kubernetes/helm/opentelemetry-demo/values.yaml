@@ -3,9 +3,17 @@
 # Declare variables to be passed into your templates.
 
 ingress:
-  enabled: true
-  host: backend.otel.demos.dynatrace.martinnirtl.com
+  enabled: false
+  host:
   traefik:
     dashboard:
-      enabled: true
-      host: traefik.otel.demos.dynatrace.martinnirtl.com
+      enabled: false
+      host:
+      admin:
+        username:
+        password:
+
+opentelemetry:
+  collector:
+    endpoint:
+    auth:

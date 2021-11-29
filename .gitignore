@@ -3,4 +3,3 @@ services/mongodb/data
 services/redis/data
 
 **/.env
-**/*-secret.yaml
