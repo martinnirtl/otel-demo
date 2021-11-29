@@ -1,3 +1,4 @@
+{{- if and .Values.ingress.enabled .Values.ingress.traefik.dashboard.enabled -}}
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
@@ -18,7 +19,7 @@ spec:
     - web
     - websecure
   routes:
-    - match: Host(`traefik.demos.dynatrace.martinnirtl.com`)
+    - match: {{ print "Host(`" .Values.ingress.traefik.dashboard.host "`)" }}
       kind: Rule
       services:
         - name: api@internal
@@ -27,3 +28,4 @@ spec:
         - name: dashboard-auth
   tls:
     certResolver: cert-resolver
+{{- end }}

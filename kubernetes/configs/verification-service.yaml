@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: verification-service-config
-data:
-  PORT: '4010'

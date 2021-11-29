@@ -1,0 +1,11 @@
+# Default values for opentelemetry-demo.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+ingress:
+  enabled: true
+  host: backend.otel.demos.dynatrace.martinnirtl.com
+  traefik:
+    dashboard:
+      enabled: true
+      host: traefik.otel.demos.dynatrace.martinnirtl.com
