@@ -52,24 +52,3 @@ spec:
             - name: http
               containerPort: 4000
               protocol: TCP
-
-{{- if .Values.ingress.enabled -}}
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  namespace: otel-demo
-  name: backend-ingress
-spec:
-  entryPoints:
-    - web
-    - websecure
-  routes:
-    - match: {{ print "Host(`" .Values.ingress.host "`)" }}
-      kind: Rule
-      services:
-        - name: backend
-          port: 4000
-  tls:
-    certResolver: cert-resolver
-{{- end }}

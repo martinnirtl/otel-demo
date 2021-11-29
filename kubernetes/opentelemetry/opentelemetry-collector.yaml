@@ -2,6 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  namespace: opentelemetry
   name: opentelemetry-collector-config
 data:
   config.yaml: |
@@ -37,6 +38,7 @@ kind: Service
 metadata:
   labels:
     app: opentelemetry-collector
+  namespace: opentelemetry
   name: opentelemetry-collector
 spec:
   selector:
@@ -58,6 +60,7 @@ kind: Deployment
 metadata:
   labels:
     app: opentelemetry-collector
+  namespace: opentelemetry
   name: opentelemetry-collector
 spec:
   replicas: 1
