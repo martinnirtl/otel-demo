@@ -30,9 +30,9 @@ The signup procedure can be described in 6 simple steps:
 There are two ways to run this demo:
 
 - [Docker Compose](https://github.com/martinnirtl/otel-demo/tree/master/compose) - OneAgent will be deployed as Docker container
-- [Kubernetes](https://github.com/martinnirtl/otel-demo/tree/master/kubernetes) - OneAgent deployment via Dynatrace Operator
+- WIP ~~[Kubernetes](https://github.com/martinnirtl/otel-demo/tree/master/kubernetes) - OneAgent deployment via Dynatrace Operator~~
 
-## Get Hands-on Experience
+## WIP ~~Get Hands-on Experience~~
 
 If you want to get some hands-on experience in instrumenting NodeJS apps, check out the [instrumentation tutorial](https://github.com/martinnirtl/otel-demo/tree/master/docs/instrumentation-tutorial).
 
