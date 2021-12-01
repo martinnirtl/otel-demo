@@ -62,7 +62,7 @@ Finally, we can start with running the demo. If you inspect the [docker-compose.
 
 > Check out the [Dynatrace docs](https://www.dynatrace.com/support/help/setup-and-configuration/setup-on-container-platforms/docker/set-up-dynatrace-oneagent-as-docker-container/) if you want to learn more about running the OneAgent in Docker.
 
-Next, we start Redis and MongoDB via `docker compose up -d mongo redis`. The database will get initialized at the first startup. After some seconds you can check their status via `docker compose ps` and you should see our three containers up and running:
+Next, we start Redis and MongoDB via `docker-compose up -d mongo redis`. The database will get initialized at the first startup. After some seconds you can check their status via `docker-compose ps` and you should see our three containers up and running:
 
 ![Settings Distributed Tracing](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/dockercompose-ps-redismongo.png)
 
