@@ -131,6 +131,7 @@ We will now visit our Backend Service in Dynatrace and check the distributed tra
 > If you have set up the Management Zone, you can directly go to the services view and filter by the **OpenTelemtry Demo** Management Zone. Visit the Backend Service and check out a PurePath.
 
 As our demo is now up and running, we want to check the data in Dynatrace. Let's visit the **Services** menu and filter for services running on our cluster. Select the Backend Service and visit the PurePaths view. Maybe you have to wait some minutes until you see some data.
+
 Finally, select a transaction to see the PurePath enriched by OpenTelemetry spans and explore the e2e visibility and code-level insights made possible by the OpenTelemetry span ingest API.
 
 ![Processes and Containers](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/dt-purepath.png)
