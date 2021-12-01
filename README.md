@@ -20,17 +20,17 @@ The signup procedure can be described in 6 simple steps:
 
 1. Signup-endpoint gets called with an HTTP-post call having email, name and password in the body
 2. After email address validation, the user gets stored into the mongo database
-3. Backend Service calls Mail Service's send-endpoint via HTTP-post
-4. Mail Service calls Template Service via HTTP-post to retrieve the rendered email
-5. After rendering the email, the Template Service stores the result in the Redis cache
-6. Mail Service invokes an external mail-as-a-service provider
+3. Backend Service calls Mail Service's send-endpoint via HTTP-post to send a signup confirmation mail
+4. Mail Service calls Template Service via gRPC to render the email body
+5. After rendering the email, the Template Service stores the result in the Redis cache and returns
+6. Finally, the Mail Service calls an external mail-as-a-service provider (e.g. Sendgrid) to send the email
 
 ## Run the Demo
 
 There are two ways to run this demo:
 
 - [Docker Compose](https://github.com/martinnirtl/otel-demo/tree/master/compose) - OneAgent will be deployed as Docker container
-- WIP ~~[Kubernetes](https://github.com/martinnirtl/otel-demo/tree/master/kubernetes) - OneAgent deployment via Dynatrace Operator~~
+- [Kubernetes](https://github.com/martinnirtl/otel-demo/tree/master/kubernetes) - OneAgent deployment via Dynatrace Operator
 
 ## WIP ~~Get Hands-on Experience~~
 
