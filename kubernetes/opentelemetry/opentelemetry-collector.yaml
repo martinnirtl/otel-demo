@@ -2,8 +2,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: opentelemetry
-  name: opentelemetry-collector-config
+  namespace: otel
+  name: otel-collector-config
 data:
   config.yaml: |
     receivers:
@@ -19,30 +19,29 @@ data:
         endpoint: '${OTEL_ENDPOINT_URL}'
         headers: { 'Authorization': '${OTEL_AUTH_HEADER}' }
 
-      # logging:
-      #   loglevel: debug
-      #   sampling_initial: 5
-      #   sampling_thereafter: 200
+      logging:
+        loglevel: debug
+        sampling_initial: 5
+        sampling_thereafter: 200
 
     service:
       pipelines:
         traces:
           receivers: [otlp]
           processors: []
-          exporters: [otlphttp]
-          # exporters: [otlphttp, logging]
+          exporters: [otlphttp, logging]
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: opentelemetry-collector
-  namespace: opentelemetry
-  name: opentelemetry-collector
+    app: otel-collector
+  namespace: otel
+  name: otel-collector
 spec:
   selector:
-    app: opentelemetry-collector
+    app: otel-collector
   ports:
     - name: metrics
       port: 8888
@@ -59,28 +58,28 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: opentelemetry-collector
-  namespace: opentelemetry
-  name: opentelemetry-collector
+    app: otel-collector
+  namespace: otel
+  name: otel-collector
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: opentelemetry-collector
+      app: otel-collector
   template:
     metadata:
       labels:
-        app: opentelemetry-collector
+        app: otel-collector
     spec:
       containers:
-        - name: opentelemetry-collector
+        - name: otel-collector
           image: otel/opentelemetry-collector:latest
           resources: {}
           args:
             - --config=/etc/opentelemetry-collector/config.yaml
           envFrom:
             - secretRef:
-                name: opentelemetry-collector-secret
+                name: otel-collector-secret
           ports:
             - name: metrics
               containerPort: 8888
@@ -97,4 +96,4 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: opentelemetry-collector-config
+            name: otel-collector-config
