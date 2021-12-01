@@ -8,7 +8,7 @@ exports.connect = async () => {
   await mongoClient.connect();
 
   logger.info('connected successfully to db server');
-  db = mongoClient.db();
+  const db = mongoClient.db();
 
   return db;
 };
