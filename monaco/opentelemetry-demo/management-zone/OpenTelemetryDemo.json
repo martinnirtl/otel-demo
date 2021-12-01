@@ -10,7 +10,7 @@
           "comparisonInfo": {
             "caseSensitive": true,
             "negate": false,
-            "operator": "EQUALS",
+            "operator": "CONTAINS",
             "type": "STRING",
             "value": "opentelemetry-demo"
           },
