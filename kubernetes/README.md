@@ -51,7 +51,7 @@ If you want to create the Managment Zone `OpenTelemetry Demo` containing all ent
 Before we start the demo services, let's deploy the OpenTelemetry collector. You can basically run the command from anywhere on your shell, but if you want to copy it, navigate into the **kubernetes** folder. Afterwards run the following command:
 
 ```bash
-kubectl apply -f opentelemetry
+kubectl -n otel apply -f opentelemetry
 ```
 
 You can verify the deployment by running the following command:
