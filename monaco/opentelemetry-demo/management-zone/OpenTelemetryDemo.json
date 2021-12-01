@@ -23,6 +23,27 @@
       "enabled": true,
       "propagationTypes": ["PROCESS_GROUP_TO_HOST", "PROCESS_GROUP_TO_SERVICE"],
       "type": "PROCESS_GROUP"
+    },
+    {
+      "conditions": [
+        {
+          "comparisonInfo": {
+            "caseSensitive": true,
+            "negate": false,
+            "operator": "EQUALS",
+            "type": "STRING",
+            "value": "opentelemetry-demo"
+          },
+          "key": {
+            "attribute": "CLOUD_APPLICATION_LABELS",
+            "dynamicKey": "app.kubernetes.io/part-of",
+            "type": "STRING"
+          }
+        }
+      ],
+      "enabled": true,
+      "propagationTypes": ["PROCESS_GROUP_TO_HOST", "PROCESS_GROUP_TO_SERVICE"],
+      "type": "PROCESS_GROUP"
     }
   ]
 }
