@@ -4,8 +4,8 @@ The following guide will help you run this demo project in Kubernetes. If you wa
 
 ### Prerequisits:
 
-- A Kubernetes cluster (e.g. [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/))
-- Dynatrace Tenant or Environment
+- Dynatrace Tenant or Environment (start your [free trial](https://www.dynatrace.com/trial/))
+- A Kubernetes cluster (e.g. [AKS](https://azure.microsoft.com/en-us/services/kubernetes-service/)) with [Dynatrace Operator](https://www.dynatrace.com/support/help/setup-and-configuration/setup-on-container-platforms/kubernetes/monitor-kubernetes-environments/) installed
 
 ## 1. Dynatrace Configuration
 
@@ -40,7 +40,7 @@ Before we can launch our demo, we will create the `otel` namespace and a Kuberne
 kubectl -n otel create secret generic otel-collector-secret --from-literal "OTEL_ENDPOINT_URL=<TENANT-BASEURL>/api/v2/otlp" --from-literal "OTEL_AUTH_HEADER=Api-Token <API-TOKEN>"
 ```
 
-> Create a token via Access Tokens menu with **Ingest OpenTelemetry traces** and optionally with **Write Configuration (API v1)** (if you want to run step 2.1) permissions assigned.
+> Create a token via Access Tokens menu with **Ingest OpenTelemetry traces** and optionally **Write Configuration (API v1)** (if you want to run step 2.1) permissions assigned.
 
 ### 2.1 Create Management Zone via Monaco
 
@@ -52,6 +52,12 @@ Before we start the demo services, let's deploy the OpenTelemetry collector. You
 
 ```bash
 kubectl apply -f opentelemetry
+```
+
+You can verify the deployment by running the following command:
+
+```bash
+kubectl -n otel get all
 ```
 
 Output:
@@ -75,6 +81,12 @@ Next, we can deploy the demo services in the `default` namespace:
 
 ```bash
 kubectl apply -f services
+```
+
+Again, you can verify the deployment by running the following command:
+
+```bash
+kubectl get all
 ```
 
 Output:
@@ -119,6 +131,9 @@ We will now visit our Backend Service in Dynatrace and check the distributed tra
 > If you have set up the Management Zone, you can directly go to the services view and filter by the **OpenTelemtry Demo** Management Zone. Visit the Backend Service and check out a PurePath.
 
 As our demo is now up and running, we want to check the data in Dynatrace. Let's visit the **Services** menu and filter for services running on our cluster. Select the Backend Service and visit the PurePaths view. Maybe you have to wait some minutes until you see some data.
+Finally, select a transaction to see the PurePath enriched by OpenTelemetry spans and explore the e2e visibility and code-level insights made possible by the OpenTelemetry span ingest API.
+
+![Processes and Containers](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/dt-purepath.png)
 
 ### Having problems or facing issues?
 

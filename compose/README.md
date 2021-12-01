@@ -4,10 +4,10 @@ The following guide will help you run this demo project in Docker Compose. If yo
 
 ### Prerequisits:
 
+- Dynatrace Tenant or Environment (start your [free trial](https://www.dynatrace.com/trial/))
 - Linux or Windows host
 - Docker: https://docs.docker.com/get-docker
 - Docker Compose: https://docs.docker.com/compose/install (usually comes with Docker Desktop)
-- Dynatrace Tenant or Environment
 
 > You can verify your docker(-compose) installation by running `docker version` or `docker-compose version`.
 
