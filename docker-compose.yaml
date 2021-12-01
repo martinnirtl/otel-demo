@@ -70,6 +70,9 @@ services:
   otel-collector:
     image: otel/opentelemetry-collector:latest
     command: ['--config=/etc/otel-collector-config.yaml']
+    environment:
+      - OTEL_ENDPOINT_URL # Set via .env file
+      - OTEL_AUTH_HEADER # Set via .env file
     ports:
       # - "1888:1888"   # pprof extension
       - '8888:8888' # Prometheus metrics exposed by the collector
