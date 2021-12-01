@@ -33,8 +33,8 @@ Go to **Settings > Processes and containers > Custom process monitoring rules** 
 
 Both Mail Service and Load Generator have the respective variable set on the image at build-time:
 
-- Mail Service: https://github.com/martinnirtl/otel-demo/blob/master/services/loadgen/Dockerfile
-- Load Generator: https://github.com/martinnirtl/otel-demo/blob/master/services/mail-service/Dockerfile
+- Load Generator: https://github.com/martinnirtl/otel-demo/blob/master/services/loadgen/Dockerfile
+- Mail Service: https://github.com/martinnirtl/otel-demo/blob/master/services/mail-service/Dockerfile
 
 ## 2. Configure the Deployment
 
