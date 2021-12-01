@@ -34,7 +34,6 @@ metadata:
   labels:
     app: mail-service
     app.kubernetes.io/name: mail-service
-    # app.kubernetes.io/instance: mail-service-abcdef
     app.kubernetes.io/version: latest
     app.kubernetes.io/component: service
     app.kubernetes.io/part-of: opentelemetry-demo

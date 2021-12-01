@@ -31,7 +31,6 @@ metadata:
   labels:
     app: template-service
     app.kubernetes.io/name: template-service
-    # app.kubernetes.io/instance: template-service-abcdef
     app.kubernetes.io/version: latest
     app.kubernetes.io/component: service
     app.kubernetes.io/part-of: opentelemetry-demo

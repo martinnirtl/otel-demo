@@ -31,7 +31,6 @@ metadata:
   labels:
     app: backend
     app.kubernetes.io/name: backend
-    # app.kubernetes.io/instance: backend-abcdef
     app.kubernetes.io/version: latest
     app.kubernetes.io/component: service
     app.kubernetes.io/part-of: opentelemetry-demo

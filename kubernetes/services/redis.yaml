@@ -20,7 +20,6 @@ metadata:
   labels:
     db: redis
     app.kubernetes.io/name: redis
-    # app.kubernetes.io/instance: redis-abcdef
     app.kubernetes.io/version: 5.0.13
     app.kubernetes.io/component: database
     app.kubernetes.io/part-of: opentelemetry-demo

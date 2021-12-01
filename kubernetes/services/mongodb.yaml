@@ -57,7 +57,6 @@ metadata:
   labels:
     db: mongo
     app.kubernetes.io/name: mongo
-    # app.kubernetes.io/instance: mongo-abcdef
     app.kubernetes.io/version: 5.0.4
     app.kubernetes.io/component: database
     app.kubernetes.io/part-of: opentelemetry-demo
