@@ -59,6 +59,13 @@ kind: Deployment
 metadata:
   labels:
     app: otel-collector
+    app.kubernetes.io/name: otel-collector
+    # app.kubernetes.io/instance: otel-collector-abcdef
+    app.kubernetes.io/version: latest
+    app.kubernetes.io/component: service
+    app.kubernetes.io/part-of: opentelemetry-components
+    app.kubernetes.io/managed-by: manifests
+    app.kubernetes.io/created-by: admin
   namespace: otel
   name: otel-collector
 spec:
