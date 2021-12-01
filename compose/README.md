@@ -50,7 +50,7 @@ DT_TOKEN=
 >
 > Create a token via Access Tokens menu with **Ingest OpenTelemetry traces**, **PaaS integration - Installer download** and optionally with **Write Configuration (API v1)** (if you want to run step 2.1) permissions assigned.
 
-### 2.1 Create Management Zone via Monaco
+### 2.1 Create Management Zone via Monaco (optional)
 
 If you want to create the Managment Zone `OpenTelemetry Demo` containing all entities of this demo, and get an introduction to the Monaco tool, check out this 5/10-minute guide [here](https://github.com/martinnirtl/otel-demo/tree/master/monaco).
 
