@@ -1,9 +1,12 @@
 const PROTO_PATH = __dirname + '/../protos/template-service.proto';
 
+const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 const { log } = require('./logging');
 const { render } = require('./renderer');
+
+diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ALL);
 
 log.info(`loading the proto file from: ${PROTO_PATH}`);
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
