@@ -5,8 +5,7 @@
   "main": "src/start.js",
   "scripts": {
     "dev": "nodemon -r dotenv/config src/index.js | pino-pretty -cm content",
-    "dev:tracing": "nodemon -r dotenv/config -r ./src/tracing.js src/index.js | pino-pretty -cm content",
-    "start": "node src/start.js"
+    "dev:tracing": "nodemon -r dotenv/config -r ./src/tracing.js src/index.js | pino-pretty -cm content"
   },
   "keywords": [],
   "author": "",
