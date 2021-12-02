@@ -1,6 +1,7 @@
 // const { BasicTracerProvider } = require('@opentelemetry/tracing');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { IORedisInstrumentation } = require('@opentelemetry/instrumentation-ioredis');
+const { GrpcInstrumentation } = require('@opentelemetry/instrumentation-grpc');
 const { log } = require('./logging');
 
 log.info('initializing the tracing module...');
@@ -9,6 +10,5 @@ log.info('initializing the tracing module...');
 // tracerProvider.register();
 
 registerInstrumentations({
-  // tracerProvider,
-  instrumentations: [new IORedisInstrumentation()],
+  instrumentations: [new IORedisInstrumentation(), new GrpcInstrumentation()],
 });

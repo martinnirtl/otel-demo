@@ -15,7 +15,7 @@ USER node
 EXPOSE 4200
 
 # NOTE enables graceful shutdown > https://medium.com/@gchudnov/trapping-signals-in-docker-containers-7a57fdda7d86
-ENTRYPOINT ["node", "src/index.js"]
+ENTRYPOINT ["node", "-r", "./src/tracing.js", "src/index.js"]
 
 
 # https://nodejs.org/en/docs/guides/nodejs-docker-webapp/
