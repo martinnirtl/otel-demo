@@ -82,6 +82,10 @@ As our demo is now up and running, we want to check the data in Dynatrace. Let's
 
 From the process, we can easily navigate to the Backend Service and visit the PurePaths view. Finally, select a transaction to see the PurePath enriched by OpenTelemetry spans and explore the e2e visibility and code-level insights made possible by the OpenTelemetry span ingest API.
 
+> Please note: W3C trace context over gRPC is currently not supported by the OneAgent for NodeJS, which is why you won't get the full e2e visibility out of the box.
+>
+> Fortunately, we can make it work with OpenTelemetry - please reach out to [me](mailto:martin.nirtl@dynatrace.com) if you want to know how this can be done.
+
 ![Processes and Containers](https://raw.githubusercontent.com/martinnirtl/otel-demo/master/docs/img/dt-purepath.png)
 
 ### Having problems or facing issues?
