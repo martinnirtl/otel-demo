@@ -4,7 +4,7 @@ const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 const { log } = require('./logging');
-const { render } = require('./renderer');
+const { render } = require('./handlers/renderer');
 
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ALL);
 

@@ -1,5 +1,5 @@
-const { log } = require('./logging');
-const { cache, keyify } = require('./cache');
+const { log } = require('../logging');
+const { cache, keyify } = require('../cache');
 
 const templates = {
   'user.signup': vars => ({
