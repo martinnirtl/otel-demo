@@ -10,7 +10,7 @@ const pino = require('pino-http')({
     },
   },
   genReqId(req) {
-    const traceparent = req.headers['traceparent'];
+    const traceparent = req.get('traceparent');
 
     return traceparent ? traceparent.split('-')[1] : uuid();
   },
