@@ -20,7 +20,7 @@
     "express": "^4.17.1",
     "lodash": "^4.17.21",
     "mongodb": "^4.1.0",
-    "pino-http": "^5.7.0"
+    "pino-http": "^6.3.3"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",

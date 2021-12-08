@@ -94,7 +94,7 @@ app.post('/signup', async (req, res) => {
 
     // sendConfirmationEmailSpan.addEvent('send', emailContent);
     // sendConfirmationEmailSpan.setStatus({
-    //    code: opentelemetry.SpanStatusCode.OK,
+    //   code: opentelemetry.SpanStatusCode.OK,
     // });
     // sendConfirmationEmailSpan.end();
 
