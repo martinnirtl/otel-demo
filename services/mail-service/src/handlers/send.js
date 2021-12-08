@@ -3,7 +3,6 @@ const _ = require('lodash');
 const axios = require('axios').default;
 const { nanoid } = require('nanoid');
 
-const { cache } = require('../cache');
 const { client: templateService } = require('../templateService');
 
 const tracer = opentelemetry.trace.getTracer('handers/send.js');
@@ -65,7 +64,7 @@ module.exports = async (req, res) => {
     if (sid) {
       req.log.info('persisting status in db...');
 
-      cache.setex(sid, 86400, 'accepted').catch(error => req.log.error(error));
+      req.cache.setex(sid, 86400, 'accepted').catch(error => req.log.error(error));
     }
 
     req.log.info('sending response...');

@@ -10,4 +10,4 @@ const redis = new Redis({
   keyPrefix: 'mail-service',
 });
 
-exports.cache = redis;
+module.exports = redis;
