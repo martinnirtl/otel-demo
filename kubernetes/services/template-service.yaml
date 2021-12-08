@@ -51,9 +51,6 @@ spec:
         - name: template-service
           image: martinnirtl/demos.opentelemetry.template-service:latest
           resources: {}
-          command:
-            - node
-            - src/start.js
           envFrom:
             - configMapRef:
                 name: template-service-config
