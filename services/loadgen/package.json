@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "req:single": "node -r dotenv/config single.js"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,7 @@
     "pino": "^6.13.1"
   },
   "devDependencies": {
+    "dotenv": "^10.0.0",
     "eslint": "^8.3.0"
   }
 }
