@@ -1,4 +1,6 @@
+const { context, trace } = require('@opentelemetry/api');
 const { v4: uuid } = require('uuid');
+
 const pino = require('pino-http')({
   name: process.env.SERVICE_NAME,
   base: undefined,
@@ -10,7 +12,12 @@ const pino = require('pino-http')({
     },
   },
   genReqId(req) {
+    const ctx = trace.getSpanContext(context.active());
     const traceparent = req.get('traceparent');
+
+    if (ctx) {
+      return ctx.traceId;
+    }
 
     return traceparent ? traceparent.split('-')[1] : uuid();
   },

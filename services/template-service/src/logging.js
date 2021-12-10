@@ -8,6 +8,7 @@ const pino = require('pino')({
       return { level: label };
     },
   },
+  // TODO add reqId to log event
   level: process.env.LOG_LEVEL || 'debug',
 });
 
