@@ -1,4 +1,14 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "todo-tree.general.tags": ["INSTRUMENT"],
+  "todo-tree.highlights.customHighlight": {
+    "INSTRUMENT": {
+      "foreground": "yellow",
+      "background": "grey",
+      "iconColour": "yellow",
+      "icon": "telescope",
+      "gutterIcon": true
+    }
+  }
 }
