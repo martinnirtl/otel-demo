@@ -1,3 +1,4 @@
+const { context, trace } = require('@opentelemetry/api');
 const pino = require('pino')({
   name: process.env.SERVICE_NAME,
   base: undefined,
@@ -8,7 +9,15 @@ const pino = require('pino')({
       return { level: label };
     },
   },
-  // TODO add reqId to log event
+  mixin() {
+    const ctx = trace.getSpanContext(context.active());
+
+    if (ctx) {
+      return `api-${ctx.traceId}`;
+    }
+
+    return {};
+  },
   level: process.env.LOG_LEVEL || 'debug',
 });
 

@@ -16,10 +16,10 @@ const pino = require('pino-http')({
     const traceparent = req.get('traceparent');
 
     if (ctx) {
-      return ctx.traceId;
+      return `api-${ctx.traceId}`;
     }
 
-    return traceparent ? traceparent.split('-')[1] : uuid();
+    return traceparent ? `header-${traceparent.split('-')[1]}` : `uuid-${uuid()}`;
   },
   level: process.env.LOG_LEVEL || 'debug',
   quietReqLogger: true,
