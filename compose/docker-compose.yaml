@@ -11,7 +11,7 @@ services:
     # ports:
     #   - "27017:27017"
     volumes:
-      - ../services/mongodb/init:/docker-entrypoint-initdb.d
+      - ../services/utils/mongodb/init:/docker-entrypoint-initdb.d
 
   redis:
     image: redis:5.0.13
