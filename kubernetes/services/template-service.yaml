@@ -50,6 +50,7 @@ spec:
       containers:
         - name: template-service
           image: martinnirtl/demos.opentelemetry.template-service:latest
+          args: ["-r", "./src/tracing.js", "src/index.js"]
           resources: {}
           envFrom:
             - configMapRef:

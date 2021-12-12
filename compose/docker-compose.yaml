@@ -20,6 +20,7 @@ services:
 
   template-service:
     image: martinnirtl/demos.opentelemetry.template-service:latest
+    command: ["-r", "./src/tracing.js", "src/index.js"]
     environment:
       - PORT=4200
       - REDIS_HOST=redis
