@@ -1,11 +1,7 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  "todo-tree.general.tags": ["TODO", "FIXME", "INSTRUMENT", "CODE BLOCK", "NOTE"],
-  "todo-tree.general.tagGroups": {
-    "FIXME": ["FIXME", "FIXIT", "FIX"],
-    "NOTE": ["NOTE", "FYI"]
-  },
+  "todo-tree.general.tags": ["TODO", "FIXME", "INSTRUMENT", "CODE BLOCK", "FYI"],
   "todo-tree.highlights.customHighlight": {
     "TODO": {
       "foreground": "White",
@@ -36,7 +32,7 @@
       "type": "text",
       "hideFromTree": true
     },
-    "NOTE": {
+    "FYI": {
       "foreground": "White",
       "background": "DodgerBlue",
       "icon": "info",
