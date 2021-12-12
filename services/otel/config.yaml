@@ -3,8 +3,9 @@ receivers:
     protocols:
       grpc:
         endpoint: 0.0.0.0:4317
-      # http:
-      #   endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
 
 exporters:
   otlphttp:
@@ -20,5 +21,5 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: []
+      processors: [batch]
       exporters: [otlphttp, logging]

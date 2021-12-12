@@ -13,6 +13,9 @@ data:
           # http:
           #   endpoint: 0.0.0.0:4318
 
+    processors:
+      batch:
+
     exporters:
       otlphttp:
         endpoint: '${OTEL_ENDPOINT_URL}'
@@ -27,7 +30,7 @@ data:
       pipelines:
         traces:
           receivers: [otlp]
-          processors: []
+          processors: [batch]
           exporters: [otlphttp, logging]
 
 ---
