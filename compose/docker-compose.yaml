@@ -30,7 +30,7 @@ services:
 
   mail-service:
     image: martinnirtl/demos.opentelemetry.mail-service:latest
-    command: ["-r", "./src/tracing.js"]
+    command: ["-r", "./src/tracing.js", "src/index.js"]
     environment:
       - PORT=4100
       - REDIS_HOST=redis

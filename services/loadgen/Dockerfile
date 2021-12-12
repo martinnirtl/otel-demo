@@ -13,7 +13,8 @@ COPY . .
 
 USER node
 # NOTE enables graceful shutdown > https://medium.com/@gchudnov/trapping-signals-in-docker-containers-7a57fdda7d86
-ENTRYPOINT ["node", "src/index.js"]
+ENTRYPOINT ["node"] 
+CMD ["src/index.js"]
 
 # https://nodejs.org/en/docs/guides/nodejs-docker-webapp/
 # https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md

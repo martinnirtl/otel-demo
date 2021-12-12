@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
         - image: martinnirtl/demos.opentelemetry.mail-service:latest
-          args: ["-r", "./src/tracing.js"]
+          args: ["-r", "./src/tracing.js", "src/index.js"]
           name: mail-service
           resources: {}
           envFrom:
