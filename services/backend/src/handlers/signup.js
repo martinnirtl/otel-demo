@@ -45,7 +45,6 @@ module.exports = async (req, res) => {
   }
 
   // INSTRUMENT (2, optional) sending email [advanced] - TASK create nested spans
-  // TODO PurePath visualization incorrect - confirm using Tempo tracing backend
   span = tracer.startSpan('sending email', { attributes: { 'app.user.email': user.email } });
   const ctx = trace.setSpan(context.active(), span);
   // CODE BLOCK START - sending email
