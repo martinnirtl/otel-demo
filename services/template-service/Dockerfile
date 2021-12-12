@@ -1,5 +1,8 @@
 FROM node:14.17-alpine3.12
 
+ENV NODE_ENV production
+ENV SERVICE_NAME template-service
+
 WORKDIR /usr/src/app
 
 COPY ./package*.json .
@@ -8,15 +11,11 @@ RUN npm install --only=prod
 
 COPY . .
 
-ENV NODE_ENV production
-ENV SERVICE_NAME template-service
 
 USER node
 EXPOSE 4200
-
 # NOTE enables graceful shutdown > https://medium.com/@gchudnov/trapping-signals-in-docker-containers-7a57fdda7d86
-ENTRYPOINT ["node", "-r", "./src/tracing.js", "src/index.js"]
-
+ENTRYPOINT ["node", "src/index.js"]
 
 # https://nodejs.org/en/docs/guides/nodejs-docker-webapp/
 # https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md
