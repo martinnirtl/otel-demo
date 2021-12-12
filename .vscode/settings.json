@@ -7,7 +7,7 @@
       "foreground": "White",
       "background": "Orange",
       "iconColour": "Orange",
-      "icon": "todo"
+      "icon": "check-circle"
     },
     "FIXME": {
       "foreground": "White",
