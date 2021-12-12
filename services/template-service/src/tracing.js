@@ -1,3 +1,4 @@
+// INSTRUMENT (7) libs - gRPC server and redis client [advanced] - TASK configure instrumentation
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { IORedisInstrumentation } = require('@opentelemetry/instrumentation-ioredis');
 const { GrpcInstrumentation } = require('@opentelemetry/instrumentation-grpc');

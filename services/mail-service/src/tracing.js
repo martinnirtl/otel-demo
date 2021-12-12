@@ -1,3 +1,4 @@
+// INSTRUMENT (3) service [advanced] - TASK configure SDK
 const { SimpleSpanProcessor, ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base'); // exchange if possible
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
 const { GrpcInstrumentation } = require('@opentelemetry/instrumentation-grpc');

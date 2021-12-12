@@ -13,20 +13,20 @@ module.exports = async (req, res) => {
 
   const sid = _.get(req, 'body.sid', nanoid(10));
 
-  // INSTRUMENT extracting variables [simple]
-  const span = tracer.startSpan('Extracting variables', { attributes: { 'app.mail.sid': sid } });
+  // INSTRUMENT (4, optional) extracting variables [simple] - TASK trace
+  const span = tracer.startSpan('extracting variables', { attributes: { 'app.mail.sid': sid } });
+  // CODE BLOCK START - extracting variables
   const template = _.get(req, 'body.template');
   let subject = _.get(req, 'body.subject');
   let text = _.get(req, 'body.text');
-
+  // CODE BLOCK END - extracting variables
   span.end();
 
-  // INSTRUMENT render template [advanced] - add random baggage
+  // INSTRUMENT (5, optional) render template [advanced] - TASK add random baggage
   const baggage = propagation.createBaggage({ hello: { value: 'world', metadata: ['foo', 'bar'] } });
   const ctx = propagation.setBaggage(context.active(), baggage);
   // const headers = {};
   // propagation.inject(context, headers);
-
   let renderedTemplate;
   if (template) {
     renderedTemplate = tracer.startActiveSpan(
@@ -37,6 +37,7 @@ module.exports = async (req, res) => {
         req.log.info(template, 'calling template-service to render text...');
 
         try {
+          // CODE BLOCK START - render template
           const { subject, body } = await new Promise((resolve, reject) =>
             templateService.render(template, (error, response) => {
               req.log.info({ error, response }, 'received response');
@@ -48,7 +49,7 @@ module.exports = async (req, res) => {
               return resolve(response);
             }),
           );
-
+          // CODE BLOCK END - render template
           return { subject, body };
         } catch (error) {
           span.setStatus({
@@ -81,6 +82,8 @@ module.exports = async (req, res) => {
       try {
         req.log.info('sending mail payload to mail-provider...');
 
+        // INSTRUMENT (6, optional) deliver email [advanced] - TASK add random baggage
+        // CODE BLOCK START - deliver mail
         // FYI baggage should be propagated automatically as it's set on the active context
         const { data } = await axios.post('https://httpbin.org/anything', {
           data: {
@@ -96,7 +99,7 @@ module.exports = async (req, res) => {
 
           req.cache.setex(sid, 86400, 'accepted').catch(error => req.log.error(error));
         }
-
+        // CODE BLOCK END - deliver mail
         return data;
       } catch (error) {
         span.setStatus({

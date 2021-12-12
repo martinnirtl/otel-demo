@@ -11,8 +11,9 @@ module.exports = async (req, res) => {
 
   const user = _.get(req, 'body'); // FYI usually we would need to validate the user object - we will only validate the email via a simple regex below
 
-  // INSTRUMENT email validation [simple]
+  // INSTRUMENT (1) email validation [simple] - TASK trace
   let span = tracer.startSpan('validate email', { attributes: { 'app.user.email': user.email } });
+  // CODE BLOCK START - email validation
   try {
     const simpleMailRegex = /\S+@\S+\.\S+/;
     const valid = simpleMailRegex.test(user.email);
@@ -31,6 +32,7 @@ module.exports = async (req, res) => {
   } finally {
     span.end();
   }
+  // CODE BLOCK END - email validation
 
   try {
     const users = req.db.collection('users');
@@ -42,13 +44,16 @@ module.exports = async (req, res) => {
     return res.status(400).send({ code: 'CreateUserError' });
   }
 
-  // INSTRUMENT sending email [advanced] - nested traces
+  // INSTRUMENT (2, optional) sending email [advanced] - TASK create nested spans
+  // TODO PurePath visualization incorrect - confirm using Tempo tracing backend
   span = tracer.startSpan('sending email', { attributes: { 'app.user.email': user.email } });
   const ctx = trace.setSpan(context.active(), span);
+  // CODE BLOCK START - sending email
   try {
     req.log.info('building the payload...');
 
-    const subspan = tracer.startSpan('building the payload', null, ctx);
+    // CODE BLOCK START - building payload
+    const subspan = tracer.startSpan('building the payload', {}, ctx);
     const emailContent = {
       to: user.email,
       from: 'welcome@nptn.one',
@@ -60,6 +65,7 @@ module.exports = async (req, res) => {
         },
       },
     };
+    // CODE BLOCK END - building payload
     subspan.end();
 
     req.log.info('sending the email...');
@@ -67,6 +73,8 @@ module.exports = async (req, res) => {
       const subspan = tracer.startSpan('calling mail-service', {
         attributes: { 'app.mail-service': `${process.env.MAIL_SERVICE_BASE_URL}/send` },
       });
+
+      // CODE BLOCK START - calling mail-service
       try {
         return axios.post(`${process.env.MAIL_SERVICE_BASE_URL}/send`, emailContent);
       } catch (error) {
@@ -77,9 +85,11 @@ module.exports = async (req, res) => {
       } finally {
         subspan.end();
       }
+      // CODE BLOCK END - calling mail-service
     });
     // const { data } = await axios.post(`${process.env.MAIL_SERVICE_BASE_URL}/send`, emailContent);
     req.log.debug({ res: data }, 'done');
+    // CODE BLOCK START - sending email
 
     return res.end();
   } catch (error) {
