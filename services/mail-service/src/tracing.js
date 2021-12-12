@@ -1,11 +1,9 @@
 // INSTRUMENT (3) service [advanced] - TASK configure SDK
-const { SimpleSpanProcessor, ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base'); // exchange if possible
+const { SimpleSpanProcessor, ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base');
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
 const { GrpcInstrumentation } = require('@opentelemetry/instrumentation-grpc');
 const { IORedisInstrumentation } = require('@opentelemetry/instrumentation-ioredis');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
-// const { CollectorTraceExporter } = require('@opentelemetry/exporter-collector'); // OTLP HTTP - will be renamed to @opentelemetry/exporter-otlp-http
-// const { CollectorTraceExporter } = require('@opentelemetry/exporter-collector-proto'); OTLP PROTO - will be renamed to @opentelemetry/exporter-otlp-proto
 const { CollectorTraceExporter } = require('@opentelemetry/exporter-collector-grpc'); // OTLP GRPC - will be renamed to @opentelemetry/exporter-otlp-grpc
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
@@ -28,12 +26,15 @@ if (process.env.OTEL_ENDPOINT_URL) {
   });
   tracerProvider.addSpanProcessor(new SimpleSpanProcessor(exporter)); // using simpleSpanProcessor as otel-collector and grpc exporter in place
 
+  // FYI alternate solution with batch processor
   // tracerProvider.addSpanProcessor(new BatchSpanProcessor(exporter, {
   //   // The maximum queue size. After the size is reached spans are dropped.
   //   maxQueueSize: 1000,
   //   // The interval between two consecutive exports
   //   scheduledDelayMillis: 30000,
   // }));
+} else {
+  logger.warn('no otel endpoint configured');
 }
 
 if (process.env.NODE_ENV !== 'production' && process.env.OTEL_DEBUG) {
