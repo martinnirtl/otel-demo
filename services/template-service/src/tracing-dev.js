@@ -18,11 +18,13 @@ const tracerProvider = new NodeTracerProvider({
 });
 
 if (process.env.OTEL_ENDPOINT_URL) {
-  const exporter = new CollectorTraceExporter({
-    url: process.env.OTEL_ENDPOINT_URL,
-  });
-  tracerProvider.addSpanProcessor(new SimpleSpanProcessor(exporter)); // using simpleSpanProcessor as otel-collector and grpc exporter in place
+  throw new Error('no otel endpoint configured');
 }
+
+const exporter = new CollectorTraceExporter({
+  url: process.env.OTEL_ENDPOINT_URL,
+});
+tracerProvider.addSpanProcessor(new SimpleSpanProcessor(exporter));
 
 if (process.env.NODE_ENV !== 'production' && process.env.OTEL_DEBUG) {
   tracerProvider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
