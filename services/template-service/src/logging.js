@@ -13,7 +13,7 @@ const pino = require('pino')({
     const ctx = trace.getSpanContext(context.active());
 
     if (ctx) {
-      return `api-${ctx.traceId}`;
+      return { reqId: `api-${ctx.traceId}` };
     }
 
     return {};
