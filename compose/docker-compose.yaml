@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 
 services:
   mongo:
@@ -9,14 +9,14 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=admin
       - MONGO_INITDB_DATABASE=backend
     # ports:
-    #   - '27017:27017'
+    #   - "27017:27017"
     volumes:
       - ../services/mongodb/init:/docker-entrypoint-initdb.d
 
   redis:
     image: redis:5.0.13
     # ports:
-    #   - '6379:6379'
+    #   - "6379:6379"
 
   template-service:
     image: martinnirtl/demos.opentelemetry.template-service:latest
@@ -26,10 +26,11 @@ services:
       - REDIS_PORT=6379
       - REDIS_DB=2
     # ports:
-    #   - '4200:4200'
+    #   - "4200:4200"
 
   mail-service:
     image: martinnirtl/demos.opentelemetry.mail-service:latest
+    command: ["-r", "./src/tracing.js"]
     environment:
       - PORT=4100
       - REDIS_HOST=redis
@@ -38,8 +39,9 @@ services:
       - TEMPLATE_SERVICE_GRPC=template-service:4200
       - OTEL_ENDPOINT_URL=grpc://otel-collector:4317 # The CollectorTraceExporter in Node expects the URL to only be the hostname. It will not work with /v1/traces.
       # - OTEL_AUTH_HEADER= # Using otel-collector as gateway.
+      - DT_INJECTION_RULES=::EXCLUDE:ALL,,
     # ports:
-    #   - '4100:4100'
+    #   - "4100:4100"
 
   backend:
     image: martinnirtl/demos.opentelemetry.backend:latest
@@ -49,33 +51,34 @@ services:
       - MAIL_SERVICE_BASE_URL=http://mail-service:4100
       - VERIFICATION_SERVICE_URL=verification-service:4010
     # ports:
-    #   - '4000:4000'
+    #   - "4000:4000"
 
   loadgen:
     image: martinnirtl/demos.opentelemetry.loadgen:latest
     environment:
       - BACKEND_BASE_URL=http://backend:4000
+      - DT_INJECTION_RULES=::EXCLUDE:ALL,,
 
   otel-collector:
     image: otel/opentelemetry-collector:latest
-    command: ['--config=/etc/otel-collector-config.yaml']
+    command: ["--config=/etc/otel-collector-config.yaml"]
     environment:
       - OTEL_ENDPOINT_URL=${DT_TENANT_BASEURL}/api/v2/otlp # Set via .env file
       - OTEL_AUTH_HEADER=Api-Token ${DT_TOKEN} # Set via .env file
     # ports:
     #   - "1888:1888"   # pprof extension
-    #   - '8888:8888' # Prometheus metrics exposed by the collector
+    #   - "8888:8888" # Prometheus metrics exposed by the collector
     #   - "8889:8889"   # Prometheus exporter metrics
     #   - "13133:13133" # health_check extension
-    #   - '4317:4317' # OTLP gRPC receiver
-    #   - '4318:4318' # OTLP HTTP receiver
+    #   - "4317:4317" # OTLP gRPC receiver
+    #   - "4318:4318" # OTLP HTTP receiver
     #   - "55670:55679" # zpages extension
     volumes:
       - ../services/otel/config.yaml:/etc/otel-collector-config.yaml
 
   oneagent:
     image: dynatrace/oneagent
-    command: ['--set-host-name=OpenTelemetry Demo Host', '--set-host-group=opentelemetry-demo-compose']
+    command: ["--set-host-name=OpenTelemetry Demo Host", "--set-host-group=opentelemetry-demo-compose"]
     restart: unless-stopped
     privileged: true
     pid: host

@@ -36,3 +36,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: loadgen-config
+          env:
+            - name: DT_INJECTION_RULES
+              value: ::EXCLUDE:ALL,,

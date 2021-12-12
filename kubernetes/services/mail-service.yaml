@@ -51,11 +51,15 @@ spec:
     spec:
       containers:
         - image: martinnirtl/demos.opentelemetry.mail-service:latest
+          args: ["-r", "./src/tracing.js"]
           name: mail-service
           resources: {}
           envFrom:
             - configMapRef:
                 name: mail-service-config
+          env:
+            - name: DT_INJECTION_RULES
+              value: ::EXCLUDE:ALL,,
           ports:
             - name: http
               containerPort: 4100
