@@ -1,5 +1,6 @@
 const PROTO_PATH = __dirname + '/../protos/template-service.proto';
 
+const exitHook = require('async-exit-hook');
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 const { log } = require('./logging');
@@ -25,9 +26,8 @@ server.bindAsync(`0.0.0.0:${process.env.PORT}`, grpc.ServerCredentials.createIns
   }
 });
 
-// TODO maybe need to switch over to use shutdown hook lib
-process.on('SIGINT', async () => {
-  log.info('received a SIGINT signal. going down...');
+exitHook(async () => {
+  log.info('received a exit signal. going down...');
 
   server.tryShutdown(error => {
     if (error) {

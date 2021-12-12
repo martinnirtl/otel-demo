@@ -1,3 +1,4 @@
+const exitHook = require('async-exit-hook');
 const Redis = require('ioredis');
 const { log } = require('./logging');
 
@@ -12,9 +13,8 @@ exports.cache = new Redis({
 
 exports.keyify = (prefix, ...keys) => [prefix, ...keys].join(':');
 
-// TODO maybe need to switch over to use shutdown hook lib
-process.on('SIGINT', async () => {
-  log.info('received a SIGINT signal. going down...');
+exitHook(async () => {
+  log.info('received a exit signal. going down...');
 
   log.info('disconnecting from redis cache...');
   await this.cache.disconnect();
