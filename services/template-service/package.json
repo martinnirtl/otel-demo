@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config src/index.js | pino-pretty -cm content"
+    "dev": "nodemon -r dotenv/config -r ./src/tracing-dev.js src/index.js | pino-pretty -cm content"
   },
   "keywords": [],
   "author": "",
@@ -12,11 +12,8 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.4.4",
     "@grpc/proto-loader": "^0.6.7",
-    "@opentelemetry/api": "^1.0.3",
-    "@opentelemetry/instrumentation": "^0.24.0",
-    "@opentelemetry/instrumentation-grpc": "^0.24.0",
-    "@opentelemetry/instrumentation-ioredis": "^0.24.0",
-    "@opentelemetry/tracing": "^0.24.0",
+    "@opentelemetry/api": "^1.0.2",
+    "async-exit-hook": "^2.0.1",
     "ioredis": "^4.27.7",
     "pino": "^7.4.0"
   },
@@ -25,5 +22,15 @@
     "eslint": "^8.3.0",
     "nodemon": "^2.0.12",
     "pino-pretty": "^7.2.0"
+  },
+  "optionalDependencies": {
+    "@opentelemetry/exporter-collector-grpc": "^0.24.0",
+    "@opentelemetry/instrumentation": "^0.24.0",
+    "@opentelemetry/instrumentation-grpc": "^0.24.0",
+    "@opentelemetry/instrumentation-ioredis": "^0.24.0",
+    "@opentelemetry/resources": "^0.24.0",
+    "@opentelemetry/sdk-trace-base": "^0.24.1-alpha.4",
+    "@opentelemetry/sdk-trace-node": "^0.24.1-alpha.4",
+    "@opentelemetry/semantic-conventions": "^0.24.0"
   }
 }

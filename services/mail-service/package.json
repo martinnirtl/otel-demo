@@ -14,18 +14,6 @@
     "@grpc/grpc-js": "^1.4.4",
     "@grpc/proto-loader": "^0.6.7",
     "@opentelemetry/api": "^1.0.2",
-    "@opentelemetry/exporter-collector": "^0.24.0",
-    "@opentelemetry/exporter-collector-grpc": "^0.24.0",
-    "@opentelemetry/exporter-collector-proto": "^0.24.0",
-    "@opentelemetry/instrumentation": "^0.24.0",
-    "@opentelemetry/instrumentation-express": "^0.24.0",
-    "@opentelemetry/instrumentation-grpc": "^0.24.0",
-    "@opentelemetry/instrumentation-http": "^0.24.0",
-    "@opentelemetry/instrumentation-ioredis": "^0.24.0",
-    "@opentelemetry/resources": "^0.24.0",
-    "@opentelemetry/sdk-trace-base": "^0.24.1-alpha.4",
-    "@opentelemetry/sdk-trace-node": "^0.24.1-alpha.4",
-    "@opentelemetry/semantic-conventions": "^0.24.0",
     "async-exit-hook": "^2.0.1",
     "axios": "^0.21.1",
     "express": "^4.17.1",
@@ -40,5 +28,17 @@
     "eslint": "^8.3.0",
     "nodemon": "^2.0.12",
     "pino-pretty": "^7.2.0"
+  },
+  "optionalDependencies": {
+    "@opentelemetry/exporter-collector-grpc": "^0.24.0",
+    "@opentelemetry/instrumentation": "^0.24.0",
+    "@opentelemetry/instrumentation-express": "^0.24.0",
+    "@opentelemetry/instrumentation-grpc": "^0.24.0",
+    "@opentelemetry/instrumentation-http": "^0.24.0",
+    "@opentelemetry/instrumentation-ioredis": "^0.24.0",
+    "@opentelemetry/resources": "^0.24.0",
+    "@opentelemetry/sdk-trace-base": "^0.24.1-alpha.4",
+    "@opentelemetry/sdk-trace-node": "^0.24.1-alpha.4",
+    "@opentelemetry/semantic-conventions": "^0.24.0"
   }
 }
