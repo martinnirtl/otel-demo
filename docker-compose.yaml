@@ -25,7 +25,7 @@ services:
     image: martinnirtl/demos.opentelemetry.template-service:latest
     build: services/template-service
     # entrypoint: ["tail", "-f", "/dev/null"]
-    command: ["-r", "./src/tracing-dev.js"]
+    command: ["-r", "./src/tracing-dev.js", "src/index.js"]
     environment:
       - PORT=4200
       - REDIS_HOST=redis
@@ -39,7 +39,7 @@ services:
     image: martinnirtl/demos.opentelemetry.mail-service:latest
     build: services/mail-service
     # entrypoint: ["tail", "-f", "/dev/null"]
-    command: ["-r", "./src/tracing.js"]
+    command: ["-r", "./src/tracing.js", "src/index.js"]
     environment:
       - PORT=4100
       - REDIS_HOST=redis
@@ -55,7 +55,7 @@ services:
     image: martinnirtl/demos.opentelemetry.backend:latest
     build: services/backend
     # entrypoint: ["tail", "-f", "/dev/null"]
-    command: ["-r", "./src/tracing-dev.js"]
+    command: ["-r", "./src/tracing-dev.js", "src/index.js"]
     environment:
       - PORT=4000
       - DB_CONNECTION_URL=mongodb://backend:swordfish@mongo:27017/backend # Use variable expansion for username and password.
