@@ -3,13 +3,10 @@ const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { IORedisInstrumentation } = require('@opentelemetry/instrumentation-ioredis');
 const { GrpcInstrumentation } = require('@opentelemetry/instrumentation-grpc');
+const { PinoInstrumentation } = require('@opentelemetry/instrumentation-pino');
 const { CollectorTraceExporter } = require('@opentelemetry/exporter-collector-grpc'); // OTLP GRPC - will be renamed to @opentelemetry/exporter-otlp-grpc
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
 const { Resource } = require('@opentelemetry/resources');
-
-const { log } = require('./logging');
-
-log.info('initializing tracing module...');
 
 const tracerProvider = new NodeTracerProvider({
   resource: new Resource({
@@ -17,7 +14,7 @@ const tracerProvider = new NodeTracerProvider({
   }),
 });
 
-if (process.env.OTEL_ENDPOINT_URL) {
+if (!process.env.OTEL_ENDPOINT_URL) {
   throw new Error('no otel endpoint configured');
 }
 
@@ -33,5 +30,14 @@ if (process.env.NODE_ENV !== 'production' && process.env.OTEL_DEBUG) {
 tracerProvider.register();
 
 registerInstrumentations({
-  instrumentations: [new IORedisInstrumentation(), new GrpcInstrumentation()],
+  instrumentations: [
+    new PinoInstrumentation({
+      // FYI optional hook to insert additional context to log object. trace_id and span_id will be added automatically
+      logHook: (_span, record) => {
+        record['resource.service.name'] = tracerProvider.resource.attributes['service.name'];
+      },
+    }),
+    new IORedisInstrumentation(),
+    new GrpcInstrumentation(),
+  ],
 });

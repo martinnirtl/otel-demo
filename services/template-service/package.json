@@ -15,7 +15,8 @@
     "@opentelemetry/api": "^1.0.2",
     "async-exit-hook": "^2.0.1",
     "ioredis": "^4.27.7",
-    "pino": "^7.4.0"
+    "pino": "^7.4.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
@@ -28,6 +29,7 @@
     "@opentelemetry/instrumentation": "^0.24.0",
     "@opentelemetry/instrumentation-grpc": "^0.24.0",
     "@opentelemetry/instrumentation-ioredis": "^0.24.0",
+    "@opentelemetry/instrumentation-pino": "^0.24.0",
     "@opentelemetry/resources": "^0.24.0",
     "@opentelemetry/sdk-trace-base": "^0.24.1-alpha.4",
     "@opentelemetry/sdk-trace-node": "^0.24.1-alpha.4",

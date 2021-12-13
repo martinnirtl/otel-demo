@@ -1,3 +1,6 @@
+// const { context, trace } = require('@opentelemetry/api');
+// const { v4: uuid } = require('uuid');
+
 const { log } = require('../logging');
 const { cache, keyify } = require('../cache');
 
@@ -8,9 +11,20 @@ const templates = {
   }),
 };
 
+// const log = mainLogger.child(
+//   {},
+//   {
+//     mixin() {
+//       const ctx = trace.getSpanContext(context.active());
+
+//       return { reqId: ctx ? ctx.traceId : `ID_${uuid()}` };
+//     },
+//   },
+// );
+
 exports.render = async ({ request, metadata }, callback) => {
   // log.debug({ traceparent: metadata.get('traceparent')[0] }, 'rendering got called');
-  log.debug({ traceparent: metadata.getMap() }, 'rendering got called');
+  log.debug({ metadata: metadata.getMap() }, 'rendering got called');
 
   const template = request.name;
   const vars = request.vars;

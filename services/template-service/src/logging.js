@@ -1,4 +1,6 @@
-const { context, trace } = require('@opentelemetry/api');
+// const { context, trace } = require('@opentelemetry/api');
+// const { v4: uuid } = require('uuid');
+
 const pino = require('pino')({
   name: process.env.SERVICE_NAME,
   base: undefined,
@@ -9,15 +11,11 @@ const pino = require('pino')({
       return { level: label };
     },
   },
-  mixin() {
-    const ctx = trace.getSpanContext(context.active());
+  // genReqId() {
+  //   const ctx = trace.getSpanContext(context.active());
 
-    if (ctx) {
-      return { reqId: `api-${ctx.traceId}` };
-    }
-
-    return {};
-  },
+  //   return { reqId: ctx ? ctx.traceId : `ID_${uuid()}` };
+  // },
   level: process.env.LOG_LEVEL || 'debug',
 });
 

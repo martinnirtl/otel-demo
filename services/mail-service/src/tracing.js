@@ -1,6 +1,7 @@
 // INSTRUMENT (3) service [advanced] - TASK configure SDK
 const { SimpleSpanProcessor, ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base');
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
+const { PinoInstrumentation } = require('@opentelemetry/instrumentation-pino');
 const { GrpcInstrumentation } = require('@opentelemetry/instrumentation-grpc');
 const { IORedisInstrumentation } = require('@opentelemetry/instrumentation-ioredis');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
@@ -9,10 +10,6 @@ const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventi
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
 const { Resource } = require('@opentelemetry/resources');
-
-const { logger } = require('./logging');
-
-logger.info('initializing tracing module...');
 
 const tracerProvider = new NodeTracerProvider({
   resource: new Resource({
@@ -33,8 +30,6 @@ if (process.env.OTEL_ENDPOINT_URL) {
   //   // The interval between two consecutive exports
   //   scheduledDelayMillis: 30000,
   // }));
-} else {
-  logger.warn('no otel endpoint configured');
 }
 
 if (process.env.NODE_ENV !== 'production' && process.env.OTEL_DEBUG) {
@@ -46,6 +41,12 @@ tracerProvider.register();
 registerInstrumentations({
   tracerProvider,
   instrumentations: [
+    new PinoInstrumentation({
+      // FYI optional hook to insert additional context to log object. trace_id and span_id will be added automatically
+      logHook: (_span, record) => {
+        record['resource.service.name'] = tracerProvider.resource.attributes['service.name'];
+      },
+    }),
     new GrpcInstrumentation(),
     new IORedisInstrumentation(),
     new HttpInstrumentation(),

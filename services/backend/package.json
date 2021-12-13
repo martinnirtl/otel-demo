@@ -31,6 +31,7 @@
     "@opentelemetry/instrumentation-express": "^0.24.0",
     "@opentelemetry/instrumentation-http": "^0.24.0",
     "@opentelemetry/instrumentation-mongodb": "^0.24.0",
+    "@opentelemetry/instrumentation-pino": "^0.24.0",
     "@opentelemetry/resources": "^0.24.0",
     "@opentelemetry/sdk-trace-base": "^0.24.1-alpha.4",
     "@opentelemetry/sdk-trace-node": "^0.24.1-alpha.4",
