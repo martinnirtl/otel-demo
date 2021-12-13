@@ -60,7 +60,6 @@ services:
       - PORT=4000
       - DB_CONNECTION_URL=mongodb://backend:swordfish@mongo:27017/backend # Use variable expansion for username and password.
       - MAIL_SERVICE_BASE_URL=http://mail-service:4100
-      - VERIFICATION_SERVICE_URL=verification-service:4010
       - OTEL_ENDPOINT_URL=grpc://otel-collector:4317 # The CollectorTraceExporter in Node expects the URL to only be the hostname. It will not work with /v1/traces.
     ports:
       - "4000:4000"
