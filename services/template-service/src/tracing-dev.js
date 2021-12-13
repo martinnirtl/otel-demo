@@ -32,7 +32,7 @@ tracerProvider.register();
 registerInstrumentations({
   instrumentations: [
     new PinoInstrumentation({
-      // FYI optional hook to insert additional context to log object. trace_id and span_id will be added automatically
+      // optional hook to insert additional context to log object. trace_id and span_id will be added automatically
       logHook: (_span, record) => {
         record['resource.service.name'] = tracerProvider.resource.attributes['service.name'];
       },

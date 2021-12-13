@@ -41,6 +41,7 @@ tracerProvider.register();
 registerInstrumentations({
   tracerProvider,
   instrumentations: [
+    // TODO currently using ^0.28.0 while other otel-modules are ^0.24.0
     new PinoInstrumentation({
       // FYI optional hook to insert additional context to log object. trace_id and span_id will be added automatically
       logHook: (_span, record) => {

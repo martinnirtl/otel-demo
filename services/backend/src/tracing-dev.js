@@ -1,4 +1,4 @@
-const { SimpleSpanProcessor, ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base'); // FIXME exchange if possible
+const { SimpleSpanProcessor, ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base'); // FIXME why are exporters not also exported via sdk-trace-node
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
 const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { CollectorTraceExporter } = require('@opentelemetry/exporter-collector-grpc');
@@ -8,6 +8,9 @@ const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
 const { MongoDBInstrumentation } = require('@opentelemetry/instrumentation-mongodb');
 const { Resource } = require('@opentelemetry/resources');
+
+// const { diag, DiagLogLevel } = require('@opentelemetry/api');
+// diag.setLogger(diag, DiagLogLevel.ALL);
 
 const tracerProvider = new NodeTracerProvider({
   resource: new Resource({
@@ -34,9 +37,9 @@ registerInstrumentations({
   tracerProvider,
   instrumentations: [
     new PinoInstrumentation({
-      // FYI optional hook to insert additional context to log object. trace_id and span_id will be added automatically
+      // optional hook to insert additional context to log object. trace_id and span_id will be added automatically
       logHook: (_span, record) => {
-        record['resource.service.name'] = tracerProvider.resource.attributes['service.name'];
+        record['resource.service.name'] = tracerProvider.resource.attributes[SemanticResourceAttributes.SERVICE_NAME];
       },
     }),
     new MongoDBInstrumentation(),

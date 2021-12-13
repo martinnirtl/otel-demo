@@ -106,7 +106,7 @@ module.exports = async (req, res) => {
             data,
           },
           'mail sent',
-        ); // FIXME data is empty
+        );
 
         if (sid) {
           req.log.info('persisting status in db...');
