@@ -68,6 +68,8 @@ module.exports = async (req, res) => {
     subspan.end();
     // CODE BLOCK END (sub 1) - building payload
 
+    span.addEvent('payload built');
+
     // CODE BLOCK START (sub 2) - calling mail-service
     req.log.info('sending the email...');
     const { data } = await context.with(ctx, async () => {
