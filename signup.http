@@ -1,0 +1,8 @@
+POST http://localhost:4000/signup
+content-type: application/json
+
+{
+    "name": "Martin",
+    "password": "swordfish",
+    "email": "martin.nirtl@dynatrace.com"
+}
