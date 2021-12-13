@@ -32,7 +32,8 @@ module.exports = async (req, res) => {
   let renderedTemplate;
   if (template) {
     // CODE BLOCK START - render template
-    renderedTemplate = tracer.startActiveSpan(
+    // FYI baggage is propagated automatically as it's set on the active context
+    renderedTemplate = await tracer.startActiveSpan(
       'render template',
       { attributes: { 'app.template.name': template.name } },
       ctx,
@@ -66,16 +67,19 @@ module.exports = async (req, res) => {
       },
     );
     // CODE BLOCK END - render template
-  }
 
-  if (!renderedTemplate) {
-    req.log.error('rendering failed');
+    if (!renderedTemplate) {
+      req.log.error('rendering failed');
 
-    return res.status(500).send({ status: 'failed', sid, code: 'SendingFailed', message: 'Failed to send email' });
+      return res.status(500).send({ status: 'failed', sid, code: 'SendingFailed', message: 'Failed to send email' });
+    }
+
+    subject = renderedTemplate.subject;
+    text = renderedTemplate.body;
   }
 
   // CODE BLOCK START - deliver mail
-  // FYI baggage should be propagated automatically as it's set on the active context
+  // FYI baggage is propagated automatically as it's set on the active context
   const data = await tracer.startActiveSpan(
     'deliver mail',
     {
@@ -93,7 +97,16 @@ module.exports = async (req, res) => {
           },
           // headers,
         });
-        req.log.info({ res: data }, 'mail sent');
+        req.log.info(
+          {
+            body: {
+              subject,
+              text,
+            },
+            data,
+          },
+          'mail sent',
+        ); // FIXME data is empty
 
         if (sid) {
           req.log.info('persisting status in db...');
