@@ -37,11 +37,12 @@ module.exports = async (req, res) => {
   try {
     const users = req.db.collection('users');
     const operationResult = await users.insertOne(user); // FYI we store passwords in plain text (which is bad), but ok for demo purposes!
+
     req.log.debug({ operationResult }, 'created new user');
   } catch (error) {
     req.log.info(error);
 
-    return res.status(400).send({ code: 'CreateUserError' });
+    return res.status(500).send({ code: 'CreateUserError' });
   }
 
   // INSTRUMENT (2, optional) sending email [advanced] - TASK create nested spans
@@ -67,9 +68,9 @@ module.exports = async (req, res) => {
     subspan.end();
     // CODE BLOCK END (sub 1) - building payload
 
+    // CODE BLOCK START (sub 2) - calling mail-service
     req.log.info('sending the email...');
     const { data } = await context.with(ctx, async () => {
-      // CODE BLOCK START (sub 2) - calling mail-service
       const subspan = tracer.startSpan('calling mail-service', {
         attributes: { 'app.mail-service': `${process.env.MAIL_SERVICE_BASE_URL}/send` },
       });
@@ -84,9 +85,9 @@ module.exports = async (req, res) => {
       } finally {
         subspan.end();
       }
-      // CODE BLOCK END (sub 2) - calling mail-service
     });
     req.log.debug({ res: data }, 'done');
+    // CODE BLOCK END (sub 2) - calling mail-service
 
     return res.end();
   } catch (error) {

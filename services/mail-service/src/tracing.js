@@ -1,15 +1,15 @@
 // INSTRUMENT (3) service [advanced] - TASK configure SDK
-const { SimpleSpanProcessor, ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base');
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
-const { PinoInstrumentation } = require('@opentelemetry/instrumentation-pino');
-const { GrpcInstrumentation } = require('@opentelemetry/instrumentation-grpc');
-const { IORedisInstrumentation } = require('@opentelemetry/instrumentation-ioredis');
-const { registerInstrumentations } = require('@opentelemetry/instrumentation');
-const { CollectorTraceExporter } = require('@opentelemetry/exporter-collector-grpc'); // OTLP GRPC - will be renamed to @opentelemetry/exporter-otlp-grpc
+const { Resource } = require('@opentelemetry/resources');
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
+const { CollectorTraceExporter } = require('@opentelemetry/exporter-collector-grpc'); // OTLP GRPC - will be renamed to @opentelemetry/exporter-otlp-grpc
+const { SimpleSpanProcessor, ConsoleSpanExporter } = require('@opentelemetry/sdk-trace-base');
+const { registerInstrumentations } = require('@opentelemetry/instrumentation');
+const { PinoInstrumentation } = require('@opentelemetry/instrumentation-pino');
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
-const { Resource } = require('@opentelemetry/resources');
+const { GrpcInstrumentation } = require('@opentelemetry/instrumentation-grpc');
+const { IORedisInstrumentation } = require('@opentelemetry/instrumentation-ioredis');
 
 const tracerProvider = new NodeTracerProvider({
   resource: new Resource({
@@ -44,8 +44,14 @@ registerInstrumentations({
     // TODO currently using ^0.28.0 while other otel-modules are ^0.24.0
     new PinoInstrumentation({
       // FYI optional hook to insert additional context to log object. trace_id and span_id will be added automatically
-      logHook: (_span, record) => {
+      logHook: (span, record) => {
         record['resource.service.name'] = tracerProvider.resource.attributes['service.name'];
+
+        // we will also populate `dt.trace_id` and `dt.span_id`
+        const ctx = span.spanContext();
+
+        record['dt.trace_id'] = ctx.traceId;
+        record['dt.span_id'] = ctx.spanId;
       },
     }),
     new GrpcInstrumentation(),

@@ -13,21 +13,25 @@ module.exports = async (req, res) => {
 
   const sid = _.get(req, 'body.sid', nanoid(10));
 
-  // INSTRUMENT (4, optional) extracting variables [simple] - TASK trace
+  // INSTRUMENT (4, optional) extracting variables [simple] - TASK trace and add span attribute for template name
   // CODE BLOCK START - extracting variables
   const span = tracer.startSpan('extracting variables', { attributes: { 'app.mail.sid': sid } });
   const template = _.get(req, 'body.template');
   let subject = _.get(req, 'body.subject');
   let text = _.get(req, 'body.text');
 
+  span.setAttribute('app.template.name', template ? template.name : '-');
   span.end();
   // CODE BLOCK END - extracting variables
 
   // INSTRUMENT (5, optional) render template [advanced] - TASK add random baggage
   const baggage = propagation.createBaggage({ hello: { value: 'world', metadata: ['foo', 'bar'] } });
   const ctx = propagation.setBaggage(context.active(), baggage);
-  // const headers = {};
-  // propagation.inject(context, headers);
+
+  // FYI manually populate context into headers object for propagation
+  const headers = {};
+  propagation.inject(context, headers);
+  req.log.debug(headers, 'headers are set for propagation');
 
   let renderedTemplate;
   if (template) {
