@@ -65,12 +65,12 @@ services:
     ports:
       - "4000:4000"
 
-  loadgen:
-    image: martinnirtl/demos.opentelemetry.loadgen:latest
-    build: services/loadgen
-    # entrypoint: ["tail", "-f", "/dev/null"]
-    environment:
-      - BACKEND_BASE_URL=http://backend:4000
+  # loadgen:
+  #   image: martinnirtl/demos.opentelemetry.loadgen:latest
+  #   build: services/loadgen
+  #   # entrypoint: ["tail", "-f", "/dev/null"]
+  #   environment:
+  #     - BACKEND_BASE_URL=http://backend:4000
 
   otel-collector:
     image: otel/opentelemetry-collector:latest
