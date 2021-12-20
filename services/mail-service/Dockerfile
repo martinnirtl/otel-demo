@@ -3,7 +3,7 @@ FROM node:14.17-alpine3.12
 ENV NODE_ENV production
 ENV SERVICE_NAME mail-service
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY ./package*.json ./
 
