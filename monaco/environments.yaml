@@ -1,4 +1,0 @@
-my-environment:
-  - name: 'My environment'
-  - env-url: '<DT_ENV_URL>'
-  - env-token-name: 'DT_API_TOKEN'
