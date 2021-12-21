@@ -1,13 +1,12 @@
 FROM node:16.13.1-alpine3.14
 
-ENV NODE_ENV production
+ENV NODE_ENV development
 ENV SERVICE_NAME mail-service
 
 WORKDIR /app
 
-COPY ./package*.json ./
-
-RUN npm install --only=prod
+COPY package*.json ./
+RUN npm install
 
 COPY . .
 
