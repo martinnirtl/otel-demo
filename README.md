@@ -34,7 +34,7 @@ There are two ways to run this demo:
 
 ## WIP ~~Get Hands-on Experience~~
 
-If you want to get some hands-on experience in instrumenting NodeJS apps, check out the [instrumentation tutorial](https://github.com/martinnirtl/otel-demo/tree/master/docs/instrumentation-tutorial).
+If you want to get some hands-on experience in instrumenting NodeJS apps and using Dynatrace, check out the `tutorial` branch.
 
 ### Having problems or facing issues?
 
