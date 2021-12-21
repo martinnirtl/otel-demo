@@ -5,9 +5,8 @@ ENV SERVICE_NAME mail-service
 
 WORKDIR /app
 
-COPY ./package*.json ./
-
-RUN npm install --only=prod
+COPY package*.json ./
+RUN npm install
 
 COPY . .
 

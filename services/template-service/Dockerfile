@@ -5,12 +5,10 @@ ENV SERVICE_NAME template-service
 
 WORKDIR /app
 
-COPY ./package*.json ./
-
-RUN npm install --only=prod
+COPY package*.json ./
+RUN npm install
 
 COPY . .
-
 
 USER node
 EXPOSE 4200
