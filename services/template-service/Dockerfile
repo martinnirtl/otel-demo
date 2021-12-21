@@ -5,7 +5,7 @@ ENV SERVICE_NAME template-service
 
 WORKDIR /app
 
-COPY ./package*.json .
+COPY ./package*.json ./
 
 RUN npm install --only=prod
 
