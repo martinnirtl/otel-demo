@@ -20,7 +20,6 @@ app.post('/send', send);
 app.get('/status/:id', getStatusById);
 
 const port = process.env.PORT || 4100;
-
 const server = app.listen(port, () => logging.logger.info(`listening on port ${port}`));
 
 exitHook(async () => {
