@@ -4,6 +4,13 @@ receivers:
       grpc:
         endpoint: 0.0.0.0:4317
 
+processors:
+  resource:
+    attributes:
+    - key: compose_service
+      from_attribute: service.name
+      action: upsert
+
 exporters:
   logging:
     loglevel: debug
@@ -18,5 +25,5 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: []
+      processors: [resource]
       exporters: [logging, otlp]
