@@ -12,3 +12,31 @@ datasources:
   editable: false
   apiVersion: 1
   uid: tempo
+  jsonData:
+    httpMethod: GET
+    tracesToLogs:
+      datasourceUid: 'loki'
+      tags: ['compose_service']
+      spanStartTimeShift: '-1m'
+      spanEndTimeShift: '1m'
+      filterByTraceID: true
+      filterBySpanID: false
+      lokiSearch: true
+  
+- name: Loki
+  type: loki
+  access: proxy
+  orgId: 1
+  url: http://loki:3100
+  basicAuth: false
+  isDefault: false
+  version: 1
+  editable: false
+  apiVersion: 1
+  uid: loki
+  jsonData:
+    derivedFields:
+      - datasourceUid: tempo
+        matcherRegex: (?:traceID|trace_id)":"(\w+)
+        name: TraceID
+        url: $${__value.raw}
